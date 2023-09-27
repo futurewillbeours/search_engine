@@ -38,7 +38,9 @@ class Generator {
 
     void generate_files() {
         std::filesystem::path resourcesPath(RESOURCES_FOLDER);
-        for (int i = 0; i < FILE_NUMBERS; i++) {
+        std::filesystem::remove_all(resourcesPath);
+        std::filesystem::create_directories(resourcesPath);
+        for (int i = 0; i < std::rand() % FILE_NUMBERS + 1; i++) {
             std::ofstream file(RESOURCES_FOLDER"file" + std::to_string(i) + ".txt");
             for(int j = 0; j < std::rand() % MAX_WORDS_IN_DOC + 1; j++) {
                 std::string buffer = word_generator();
