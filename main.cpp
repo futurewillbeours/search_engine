@@ -23,16 +23,11 @@ class ConverterJSON {
 
 class Generator {
     public:
-    
-    char char_generator () {
-        char c = std::rand() % 26 + 97;
-        return c;
-    }
 
     std::string word_generator() {
         int wordLength = std::rand() % MAX_WORD_LENGTH + 1;
         std::string word;
-        for (int i = 0; i < wordLength; i++) word += char_generator();
+        for (int i = 0; i < wordLength; i++) word += std::rand() % 26 + 97;
         return word;
     }
 
@@ -59,5 +54,5 @@ int main() {
 
     generator->generate_files();
 
-    int o; std::cin >> o;
+    //int o; std::cin >> o;
 }
