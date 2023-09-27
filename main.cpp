@@ -3,11 +3,13 @@
 #include <string>
 #include <fstream>
 #include <ctime>
+#include <filesystem>
 #include "nlohmann/json.hpp"
 
 #define MAX_WORD_LENGTH 100
 #define MAX_WORDS_IN_DOC 1000
-#define RESOURCES_PATH "resources"
+#define RESOURCES_FOLDER "../../search_engine/resources/"
+#define FILE_NUMBERS 100
 
 class ConverterJSON {
     public:
@@ -35,7 +37,16 @@ class Generator {
     }
 
     void generate_files() {
-
+        std::filesystem::path resourcesPath(RESOURCES_FOLDER);
+        for (int i = 0; i < FILE_NUMBERS; i++) {
+            std::ofstream file(RESOURCES_FOLDER"file" + std::to_string(i) + ".txt");
+            for(int j = 0; j < std::rand() % MAX_WORDS_IN_DOC + 1; j++) {
+                std::string buffer = word_generator();
+                file << buffer;
+                file << " ";
+            }
+            file.close();
+        }
     }
 };
 
@@ -44,9 +55,7 @@ int main() {
     auto converter = new ConverterJSON;
     auto generator = new Generator;
 
-    for (int i = 0; i < 100; i++) {
-        std::cout << generator->word_generator() << " ";
-    }
+    generator->generate_files();
 
     int o; std::cin >> o;
 }
