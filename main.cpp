@@ -6,10 +6,16 @@
 #include <filesystem>
 #include "nlohmann/json.hpp"
 
+//generate parameters
 #define MAX_WORD_LENGTH 100
 #define MAX_WORDS_IN_DOC 1000
 #define RESOURCES_FOLDER "../../search_engine/resources/"
 #define FILE_NUMBERS 100
+
+//project parameters
+#define PROJECT_NAME "SearchEngine"
+#define PROJECT_VERSION "0.1"
+#define MAX_RESPONSES 6
 
 class ConverterJSON {
     public:
@@ -31,7 +37,7 @@ class Generator {
         return word;
     }
 
-    void generate_files() {
+    void generate_resources_files() {
         std::filesystem::path resourcesPath(RESOURCES_FOLDER);
         std::filesystem::remove_all(resourcesPath);
         std::filesystem::create_directories(resourcesPath);
@@ -45,6 +51,15 @@ class Generator {
             file.close();
         }
     }
+
+    void generate_config() {
+
+    }
+
+    void generate_state() {
+        generate_resources_files();
+        generate_config();
+    }
 };
 
 int main() {
@@ -52,7 +67,7 @@ int main() {
     auto converter = new ConverterJSON;
     auto generator = new Generator;
 
-    generator->generate_files();
+    generator->generate_state();
 
     //int o; std::cin >> o;
 }
