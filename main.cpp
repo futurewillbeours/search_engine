@@ -44,7 +44,16 @@ class ConverterJSON {
         return config["config"]["max_responses"];
     }
 
-    std::vector<std::string> GetRequests();
+    std::vector<std::string> GetRequests() {
+        std::vector<std::string> requestsList;
+        nlohmann::json requests;
+        std::ifstream requestsFile(PROJECT_FOLDER"requests.json");
+        requestsFile >> requests;
+        requestsFile.close();
+        for (auto& el : requests["requests"].items()) requestsList.push_back(el.value());
+        return requestsList;
+    }
+
     void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers);
 };
 
@@ -109,7 +118,9 @@ int main() {
     auto generator = new Generator;
     generator -> generate_state();
     auto converter = new ConverterJSON;
-    std::cout << converter->GetResponsesLimit();
+    auto requests = converter->GetRequests();
+
+    for (auto& request:requests) std::cout << request << std::endl;
 
     int o; std::cin >> o;
 }
