@@ -9,6 +9,7 @@
 //generate parameters
 #define MAX_WORD_LENGTH 100
 #define MAX_WORDS_IN_DOC 1000
+#define PROJECT_FOLDER "../../search_engine/"
 #define RESOURCES_FOLDER "../../search_engine/resources/"
 #define FILE_NUMBERS 100
 
@@ -16,6 +17,8 @@
 #define PROJECT_NAME "SearchEngine"
 #define PROJECT_VERSION "0.1"
 #define MAX_RESPONSES 6
+
+std::filesystem::path resourcesPath(RESOURCES_FOLDER);
 
 class ConverterJSON {
     public:
@@ -38,7 +41,6 @@ class Generator {
     }
 
     void generate_resources_files() {
-        std::filesystem::path resourcesPath(RESOURCES_FOLDER);
         std::filesystem::remove_all(resourcesPath);
         std::filesystem::create_directories(resourcesPath);
         for (int i = 0; i < std::rand() % FILE_NUMBERS + 1; i++) {
@@ -53,7 +55,18 @@ class Generator {
     }
 
     void generate_config() {
+        nlohmann::json config;
+        config["config"]["name"] = PROJECT_NAME;
+        config["config"]["version"] = PROJECT_VERSION;
+        config["config"]["max_responses"] = MAX_RESPONSES;
 
+        config["files"] = nlohmann::json::array();
+
+        for (const auto & entry : std::filesystem::directory_iterator(RESOURCES_FOLDER)) config["files"].push_back(entry.path());
+
+        std::ofstream configFile(PROJECT_FOLDER"config.json");
+        configFile << config;
+        configFile.close();
     }
 
     void generate_state() {
@@ -67,7 +80,7 @@ int main() {
     auto converter = new ConverterJSON;
     auto generator = new Generator;
 
-    generator->generate_state();
+    generator -> generate_config();
 
-    //int o; std::cin >> o;
+    int o; std::cin >> o;
 }
