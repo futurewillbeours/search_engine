@@ -24,7 +24,16 @@ class ConverterJSON {
     public:
     ConverterJSON() = default;
 
-    std::vector<std::string> GetTextDocuments();
+    std::vector<std::string> GetTextDocuments() {
+        std::vector<std::string> filesList;
+        nlohmann::json config;
+        std::ifstream configFile(PROJECT_FOLDER"config.json");
+        configFile >> config;
+        configFile.close();
+        for (auto& el : config["files"].items()) filesList.push_back(el.value());
+        return filesList;
+    }
+
     int GetResponsesLimit();
     std::vector<std::string> GetRequests();
     void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers);
@@ -59,11 +68,8 @@ class Generator {
         config["config"]["name"] = PROJECT_NAME;
         config["config"]["version"] = PROJECT_VERSION;
         config["config"]["max_responses"] = MAX_RESPONSES;
-
         config["files"] = nlohmann::json::array();
-
         for (const auto & entry : std::filesystem::directory_iterator(RESOURCES_FOLDER)) config["files"].push_back(entry.path());
-
         std::ofstream configFile(PROJECT_FOLDER"config.json");
         configFile << config;
         configFile.close();
@@ -77,10 +83,9 @@ class Generator {
 
 int main() {
     std::srand(std::time(nullptr));
-    auto converter = new ConverterJSON;
     auto generator = new Generator;
-
-    generator -> generate_config();
+    generator -> generate_state();
+    auto converter = new ConverterJSON;
 
     int o; std::cin >> o;
 }
