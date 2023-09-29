@@ -54,7 +54,26 @@ class ConverterJSON {
         return requestsList;
     }
 
-    void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers);
+    void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers) {//проверить
+        nlohmann::json answersJSON;
+        for(int i = 0; i < answers.size(); i++) {
+            if (answers[i].size() == 0) answersJSON["answers"]["request" + std::to_string(i)]["result"] = false;
+            else if(answers[i].size() == 1) {
+                answersJSON["answers"]["request" + std::to_string(i)]["result"] = true;
+                answersJSON["answers"]["request" + std::to_string(i)]["docid"] = answers[i][0].first;
+                answersJSON["answers"]["request" + std::to_string(i)]["rank"] = answers[i][0].second;
+            } else {
+                answersJSON["answers"]["request" + std::to_string(i)]["result"] = true;
+                for (int j = 0; j < answers[i].size(); j++) {
+                    answersJSON["answers"]["request" + std::to_string(i)]["relevance"]["docid"] = answers[i][j].first;;
+                    answersJSON["answers"]["request" + std::to_string(i)]["relevance"]["rank"] = answers[i][j].second;;
+                }
+            }
+        }
+        std::ofstream answersFile(PROJECT_FOLDER"answers.json");
+        answersFile << answersJSON;
+        answersFile.close();
+    }
 };
 
 class Generator {
@@ -93,7 +112,7 @@ class Generator {
         configFile.close();
     }
 
-    void generate_requests() {//не более 1000 запросов от 1 до 10 слов
+    void generate_requests() {
         nlohmann::json requests;
         requests["requests"] = nlohmann::json::array();
         for (int i = 0; i < std::rand() % MAX_REQUESTS + 1; i++) {
@@ -116,11 +135,10 @@ class Generator {
 int main() {
     std::srand(std::time(nullptr));
     auto generator = new Generator;
-    generator -> generate_state();
     auto converter = new ConverterJSON;
-    auto requests = converter->GetRequests();
+    generator -> generate_state();
+    
 
-    for (auto& request:requests) std::cout << request << std::endl;
 
     int o; std::cin >> o;
 }
