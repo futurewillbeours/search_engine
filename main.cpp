@@ -12,6 +12,8 @@
 #define PROJECT_FOLDER "../../search_engine/"
 #define RESOURCES_FOLDER "../../search_engine/resources/"
 #define FILE_NUMBERS 100
+#define MAX_REQUESTS 1000
+#define MAX_WORDS_IN_REQUEST 10
 
 //project parameters
 #define PROJECT_NAME "SearchEngine"
@@ -82,9 +84,23 @@ class Generator {
         configFile.close();
     }
 
+    void generate_requests() {//не более 1000 запросов от 1 до 10 слов
+        nlohmann::json requests;
+        requests["requests"] = nlohmann::json::array();
+        for (int i = 0; i < std::rand() % MAX_REQUESTS + 1; i++) {
+            std::string request;
+            for (int j = 0; j < std::rand() % MAX_WORDS_IN_REQUEST + 1; j++) request = request + word_generator() + " ";
+            requests["requests"].push_back(request);
+        }
+        std::ofstream requestsFile(PROJECT_FOLDER"requests.json");
+        requestsFile << requests;
+        requestsFile.close();
+    }
+
     void generate_state() {
         generate_resources_files();
         generate_config();
+        generate_requests();
     }
 };
 
