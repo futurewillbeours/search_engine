@@ -16,7 +16,7 @@ class InvertedIndex {
     void print_freq_dictionary() {
         std::map<std::string, std::vector<Entry>>::iterator it = freq_dictionary.begin();
         for (it; it != freq_dictionary.end(); it++) {
-            std::cout << "Word: " << it -> first << std::endl;
+            std::cout << "Word: " << it -> first << ", vector<Entry>.size() = " << (it -> second).size() << std::endl;
             for (int i = 0; i < (it -> second).size(); i++) {
                 std::cout << "doc_id: " << (it -> second)[i].doc_id << ", count: " << (it -> second)[i].count << std::endl;
             }
@@ -39,8 +39,19 @@ class InvertedIndex {
                     vec.push_back(entry);
                     freq_dictionary[buffer] = vec;
                 } else {
+                    bool isFound = false;
                     for(int j = 0; j < freq_dictionary[buffer].size(); j++) {
-                        if(freq_dictionary[buffer][j].doc_id = i) freq_dictionary[buffer][j].count++;
+                        if(i == freq_dictionary[buffer][j].doc_id) {
+                            isFound = true;
+                            freq_dictionary[buffer][j].count++;
+                        }
+                    }
+                    if (isFound == false) {
+                        std::vector<Entry> vec;
+                        Entry entry;
+                        entry.count = 1;
+                        entry.doc_id = i;
+                        freq_dictionary[buffer].push_back(entry);
                     }
                 }
             } while (stringStream);
