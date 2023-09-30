@@ -4,6 +4,7 @@
 #include <fstream>
 #include <ctime>
 #include <filesystem>
+#include <map>
 #include "nlohmann/json.hpp"
 #include "gtest/gtest.h"
 
@@ -12,7 +13,7 @@
 #define MAX_WORDS_IN_DOC 1000
 #define PROJECT_FOLDER "../../search_engine/"
 #define RESOURCES_FOLDER "../../search_engine/resources/"
-#define FILE_NUMBERS 100
+#define FILE_NUMBERS 1000
 #define MAX_REQUESTS 1000
 #define MAX_WORDS_IN_REQUEST 10
 
@@ -83,8 +84,23 @@ class ConverterJSON {
     }
 };
 
+class InvertedIndex {
+    struct Entry { size_t doc_id, count; };
+    std::vector<std::string> docs;
+    std::map<std::string, std::vector<Entry>> freq_dictionary;
+
+};
+
 class Generator {
     public:
+
+    std::string to_eligible_number(int i){
+        std::string eligibleNumber;
+        if (i < 10) eligibleNumber = "00" + std::to_string(i);
+        else if (i < 100) eligibleNumber = "0" + std::to_string(i);
+        else eligibleNumber = std::to_string(i);
+        return eligibleNumber;
+    }
 
     std::string word_generator() {
         int wordLength = std::rand() % MAX_WORD_LENGTH + 1;
@@ -96,8 +112,9 @@ class Generator {
     void generate_resources_files() {
         std::filesystem::remove_all(resourcesPath);
         std::filesystem::create_directories(resourcesPath);
-        for (int i = 0; i < std::rand() % FILE_NUMBERS + 1; i++) {
-            std::ofstream file(RESOURCES_FOLDER"file" + std::to_string(i) + ".txt");
+        int file_numbers = std::rand() % FILE_NUMBERS + 1;
+        for (int i = 0; i < file_numbers; i++) {
+            std::ofstream file(RESOURCES_FOLDER"file" + to_eligible_number(i) + ".txt");
             for(int j = 0; j < std::rand() % MAX_WORDS_IN_DOC + 1; j++) {
                 std::string buffer = word_generator();
                 file << buffer;
