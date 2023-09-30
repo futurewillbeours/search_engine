@@ -4,11 +4,6 @@
 
 using namespace std;
 
-TEST (sample_test_case, sample_test)
-{
-    EXPECT_EQ(1, 1);
-}
-
 void TestInvertedIndexFunctionality (const vector<string>& docs, const vector<string>& requests, const std::vector<vector<Entry>>& expected) {
     std::vector<std::vector<Entry>> result;
     InvertedIndex idx;
@@ -28,9 +23,9 @@ TEST(TestCaseInvertedIndex, TestBasic) {
 }
 
 TEST(TestCaseInvertedIndex, TestBasic2) {
-    const vector<string> docs = { "milk milk milk milk water water water", "milk water water", "milk milk milk milk milk water water water water water", "americano cappuccino"};
-    const vector<string> requests = {"milk", "water", "cappuchino"};
-    const vector<vector<Entry>> expected = { { {0, 4}, {1, 1}, {2, 5} }, { {0, 2}, {1, 2}, {2, 5} }, { {3, 1} } };
+    const vector<string> docs = { "milk milk milk milk water water water", "milk water water", "milk milk milk milk milk water water water water water", "americano cappucchino"};
+    const vector<string> requests = {"milk", "water", "cappucchino"};
+    const vector<vector<Entry>> expected = { { {0, 4}, {1, 1}, {2, 5} }, { {0, 3}, {1, 2}, {2, 5} }, { {3, 1} } };
     TestInvertedIndexFunctionality(docs, requests, expected);
 }
 
