@@ -56,5 +56,5 @@ class InvertedIndex {
         }
     }
 
-    std::vector<Entry> GetWordCount (const std::string& word);
+    std::vector<Entry> GetWordCount (const std::string& word) {return freq_dictionary[word];}
 };
