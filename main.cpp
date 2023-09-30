@@ -17,7 +17,7 @@
 #define MAX_WORDS_IN_REQUEST 10
 
 //project parameters
-#define PROJECT_NAME "search_engine"
+#define PROJECT_NAME "SearchEngine"
 #define PROJECT_VERSION "0.1"
 #define MAX_RESPONSES 6
 
