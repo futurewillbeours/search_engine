@@ -5,6 +5,7 @@
 #include <ctime>
 #include <filesystem>
 #include "nlohmann/json.hpp"
+#include "gtest/gtest.h"
 
 //generate parameters
 #define MAX_WORD_LENGTH 100
@@ -16,9 +17,11 @@
 #define MAX_WORDS_IN_REQUEST 10
 
 //project parameters
-#define PROJECT_NAME "SearchEngine"
+#define PROJECT_NAME "search_engine"
 #define PROJECT_VERSION "0.1"
 #define MAX_RESPONSES 6
+
+TEST(sample_test_case, sample_test) {EXPECT_EQ(1, 1);}
 
 std::filesystem::path resourcesPath(RESOURCES_FOLDER);
 
@@ -132,7 +135,7 @@ class Generator {
     }
 };
 
-int main() {
+int main(int argc, char* argv[]) {
     std::srand(std::time(nullptr));
     auto generator = new Generator;
     auto converter = new ConverterJSON;
