@@ -21,12 +21,16 @@
 #define PROJECT_VERSION "0.1"
 #define MAX_RESPONSES 6
 
-TEST(sample_test_case, sample_test) {EXPECT_EQ(1, 1);}
+TEST(sample_test_case, sample_test)
+{
+    EXPECT_EQ(1, 1);
+}
 
 std::filesystem::path resourcesPath(RESOURCES_FOLDER);
 
 class ConverterJSON {
     public:
+
     ConverterJSON() = default;
 
     std::vector<std::string> GetTextDocuments() {
@@ -136,12 +140,15 @@ class Generator {
 };
 
 int main(int argc, char* argv[]) {
+    ::testing::InitGoogleTest(&argc, argv);
+    
     std::srand(std::time(nullptr));
     auto generator = new Generator;
     auto converter = new ConverterJSON;
     generator -> generate_state();
     
-
+    
 
     int o; std::cin >> o;
+    return RUN_ALL_TESTS();
 }
