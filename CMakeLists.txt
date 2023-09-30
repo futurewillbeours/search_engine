@@ -14,7 +14,8 @@ set(SRC_LIST ${MY_SRC_DIR}/main.cpp)
 set(INCLUDE_LIST ${MY_INCLUDE_DIR}/generator.h
                  ${MY_INCLUDE_DIR}/converterJSON.h
                  ${MY_INCLUDE_DIR}/invertedIndex.h
-                 ${MY_INCLUDE_DIR}/tests.h)
+                 ${MY_INCLUDE_DIR}/tests.h
+                 ${MY_INCLUDE_DIR}/searchServer.h)
 
 set(CMAKE_CXX_STANDARD 17)
 set(JSON_BuildTests OFF CACHE INTERNAL "")

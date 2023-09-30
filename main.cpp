@@ -16,6 +16,7 @@
 #include "./include/converterJSON.h"
 #include "./include/invertedIndex.h"
 #include "./include/tests.h"
+#include "./include/searchServer.h"
 
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
