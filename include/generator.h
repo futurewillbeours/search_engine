@@ -5,6 +5,7 @@
 #include <fstream>
 #include <filesystem>
 #include "nlohmann/json.hpp"
+#include "gtest/gtest.h"
 
 //generator parameters
 #define MAX_WORD_LENGTH 100
