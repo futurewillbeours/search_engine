@@ -26,8 +26,8 @@ int main(int argc, char* argv[]) {
     generator -> generate_state();
     auto converter = new ConverterJSON;
     auto invertedIndex = new InvertedIndex();
-    //invertedIndex->UpdateDocumentBase(converter->GetTextDocuments());
-    //invertedIndex->print_freq_dictionary();
+    invertedIndex->UpdateDocumentBase(converter->GetTextDocuments());
+    invertedIndex->print_freq_dictionary();
     
 
     int o; std::cin >> o;

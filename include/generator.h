@@ -8,11 +8,11 @@
 #include "gtest/gtest.h"
 
 //generator parameters
-#define MAX_WORD_LENGTH 100
-#define MAX_WORDS_IN_DOC 1000
+#define MAX_WORD_LENGTH 3 //100 by default
+#define MAX_WORDS_IN_DOC 1000 //1000 by default
 #define PROJECT_FOLDER "../../search_engine/"
 #define RESOURCES_FOLDER "../../search_engine/resources/"
-#define FILE_NUMBERS 1000
+#define FILE_NUMBERS 10 //1000 by default
 #define MAX_REQUESTS 1000
 #define MAX_WORDS_IN_REQUEST 10
 
@@ -46,8 +46,8 @@ class Generator {
         std::filesystem::create_directories(resourcesPath);
         int file_numbers = std::rand() % FILE_NUMBERS + 1;
         for (int i = 0; i < file_numbers; i++) {
-            std::ofstream file(RESOURCES_FOLDER"file" + to_eligible_number(i) + ".txt");
-            for(int j = 0; j < std::rand() % MAX_WORDS_IN_DOC + 1; j++) {
+            std::ofstream file(RESOURCES_FOLDER"file" + to_eligible_number(i + 1) + ".txt");
+            for(int j = 1; j <= std::rand() % MAX_WORDS_IN_DOC + 1; j++) {
                 std::string buffer = word_generator();
                 file << buffer;
                 file << " ";

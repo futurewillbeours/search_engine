@@ -20,27 +20,32 @@ class InvertedIndex {
             for (int i = 0; i < (it -> second).size(); i++) {
                 std::cout << "doc_id: " << (it -> second)[i].doc_id << ", count: " << (it -> second)[i].count << std::endl;
             }
+            std::cout << std::endl;
         }
     }
 
-    // void UpdateDocumentBase (std::vector<std::string> input_docs) {//исправить
-    //     docs = input_docs;
-    //     for(int i = 0; i < docs.size(); i++) {
-    //         std::stringstream stringStream(docs[i]);
-    //         do {
-    //             std::string buffer;
-    //             stringStream >> buffer;
-    //             if(freq_dictionary.count(buffer) == 0) {
-    //                 std::vector<Entry> vec;
-    //                 Entry entry;
-    //                 entry.count = 1;
-    //                 entry.doc_id = i;
-    //                 vec.push_back(entry);
-    //                 freq_dictionary[buffer] = vec;
-    //             } else freq_dictionary[buffer][i].count++;
-    //         } while (stringStream);
-    //     }
-    // }
+    void UpdateDocumentBase (std::vector<std::string> input_docs) {
+        docs = input_docs;
+        for(int i = 0; i < docs.size(); i++) {
+            std::stringstream stringStream(docs[i]);
+            do {
+                std::string buffer;
+                stringStream >> buffer;
+                if(freq_dictionary.count(buffer) == 0) {
+                    std::vector<Entry> vec;
+                    Entry entry;
+                    entry.count = 1;
+                    entry.doc_id = i;
+                    vec.push_back(entry);
+                    freq_dictionary[buffer] = vec;
+                } else {
+                    for(int j = 0; j < freq_dictionary[buffer].size(); j++) {
+                        if(freq_dictionary[buffer][j].doc_id = i) freq_dictionary[buffer][j].count++;
+                    }
+                }
+            } while (stringStream);
+        }
+    }
 
     std::vector<Entry> GetWordCount (const std::string& word);
 };
