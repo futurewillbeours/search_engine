@@ -1,6 +1,7 @@
 #pragma once
 
 #include <thread>
+#include <memory>
 #include "generator.h"
 
 struct Entry {
@@ -11,6 +12,7 @@ struct Entry {
 class InvertedIndex {
     std::vector<std::string> docs;
     std::map<std::string, std::vector<Entry>> freq_dictionary;
+    std::vector<std::thread> threads;
 
     public:
     InvertedIndex() = default;
@@ -48,9 +50,11 @@ class InvertedIndex {
 
     void UpdateDocumentBase (std::vector<std::string> input_docs) {
         docs = input_docs;
-        for(int i = 0; i < docs.size(); i++) {
-            indexation(i);
-        }
+        for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::indexation, this, i));
+        for(int i = 0; i < docs.size(); i++) threads[i].join();
     }
-    std::vector<Entry> GetWordCount (const std::string& word) {return freq_dictionary[word];}
+
+    std::vector<Entry> GetWordCount(const std::string& word) {
+        return freq_dictionary[word];
+    }
 };
