@@ -19,7 +19,7 @@ class InvertedIndex {
     public:
     InvertedIndex() = default;
 
-    void indexation(int i) {
+    void indexation(int i) {//correct
         mutex.lock();
         std::stringstream stringStream(docs[i]);
         do {
@@ -55,13 +55,14 @@ class InvertedIndex {
     void UpdateDocumentBase (std::vector<std::string> input_docs) {
         docs = input_docs;
         for(int i = 0; i < docs.size(); i++) {
-            //pointers.push_back(std::make_unique<std::thread>(std::thread(&InvertedIndex::indexation, this, i)));
-            threads.push_back(std::thread(&InvertedIndex::indexation, this, i));
+            pointers.push_back(std::make_unique<std::thread>(std::thread(&InvertedIndex::indexation, this, i)));
+            //threads.push_back(std::thread(&InvertedIndex::indexation, this, i));
+            //indexation(i);
 
         } 
         for(int i = 0; i < docs.size(); i++) {
-            //pointers[i].get()->join();
-            threads[i].join();
+            pointers[i].get()->join();
+            //threads[i].join();
         }
     }
 
