@@ -1,4 +1,6 @@
 #pragma once
+
+#include <thread>
 #include "generator.h"
 
 struct Entry {
@@ -12,15 +14,6 @@ class InvertedIndex {
 
     public:
     InvertedIndex() = default;
-
-    void print_freq_dictionary() {
-        std::map<std::string, std::vector<Entry>>::iterator it = freq_dictionary.begin();
-        for (it; it != freq_dictionary.end(); it++) {
-            std::cout << "Word: " << it -> first << std::endl;
-            for (int i = 0; i < (it -> second).size(); i++) std::cout << "doc_id: " << (it -> second)[i].doc_id << ", count: " << (it -> second)[i].count << std::endl;
-            std::cout << std::endl;
-        }
-    }
 
     void UpdateDocumentBase (std::vector<std::string> input_docs) {
         docs = input_docs;
