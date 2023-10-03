@@ -1,7 +1,13 @@
 #pragma once
 
+#define IS_MULTITHREADING //используется ли многопоточность
+#ifdef IS_MULTITHREADING
+    #define IS_POINTERS //используются ли std::unique_ptr при использовании многопоточности
+#endif 
+
 #include <thread>
 #include <memory>
+#include <chrono>
 #include "generator.h"
 
 struct Entry {
@@ -12,15 +18,24 @@ struct Entry {
 class InvertedIndex {
     std::vector<std::string> docs;
     std::map<std::string, std::vector<Entry>> freq_dictionary;
-    std::vector<std::thread> threads;
-    std::vector<std::unique_ptr<std::thread>> pointers;
-    std::mutex mutex;
+
+    #ifdef IS_MULTITHREADING
+        std::vector<std::thread> threads;
+        std::mutex docsAccess;
+        std::mutex dictAccess;
+        std::mutex mutex;
+        #ifdef IS_POINTERS
+            std::vector<std::unique_ptr<std::thread>> threadPointers;
+        #endif
+    #endif
 
     public:
     InvertedIndex() = default;
 
-    void indexation(int i) {//correct
-        mutex.lock();
+    void indexation(int i) {
+        #ifdef IS_MULTITHREADING
+            mutex.lock();
+        #endif
         std::stringstream stringStream(docs[i]);
         do {
             std::string buffer;
@@ -49,20 +64,32 @@ class InvertedIndex {
                 }
             } 
         } while (stringStream);
-        mutex.unlock();
+        #ifdef IS_MULTITHREADING
+            mutex.unlock();
+        #endif
     }
 
     void UpdateDocumentBase (std::vector<std::string> input_docs) {
         docs = input_docs;
         for(int i = 0; i < docs.size(); i++) {
-            pointers.push_back(std::make_unique<std::thread>(std::thread(&InvertedIndex::indexation, this, i)));
-            //threads.push_back(std::thread(&InvertedIndex::indexation, this, i));
-            //indexation(i);
-
+            #ifdef IS_MULTITHREADING
+                #ifdef IS_POINTERS
+                    threadPointers.push_back(std::make_unique<std::thread>(std::thread(&InvertedIndex::indexation, this, i)));
+                #else
+                    threads.push_back(std::thread(&InvertedIndex::indexation, this, i));
+                #endif
+            #else
+                indexation(i);
+            #endif
         } 
         for(int i = 0; i < docs.size(); i++) {
-            pointers[i].get()->join();
-            //threads[i].join();
+            #ifdef IS_MULTITHREADING
+                #ifdef IS_POINTERS
+                    threadPointers[i].get()->join();
+                #else
+                    threads[i].join();
+                #endif
+            #endif
         }
     }
 
