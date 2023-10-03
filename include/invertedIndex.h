@@ -81,7 +81,8 @@ class InvertedIndex {
             #else
                 indexation(i);
             #endif
-        } 
+        }
+        
         for(int i = 0; i < docs.size(); i++) {
             #ifdef IS_MULTITHREADING
                 #ifdef IS_POINTERS

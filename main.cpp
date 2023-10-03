@@ -18,6 +18,8 @@
 #include "./include/tests.h"
 #include "./include/searchServer.h"
 
+//todo Исправить многопоточность в invertedIndex, чтобы тесты проходили
+
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
     
