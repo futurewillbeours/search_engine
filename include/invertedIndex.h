@@ -52,8 +52,11 @@ class InvertedIndex {
 
     public:
 
-    void UpdateDocumentBase (std::vector<std::string> input_docs) {
+    InvertedIndex() {
         dictAccess = new std::mutex();
+    }
+
+    void UpdateDocumentBase (std::vector<std::string> input_docs) {
         docs = input_docs;
         std::vector<std::thread> threads;
         for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::Indexation, this, i));

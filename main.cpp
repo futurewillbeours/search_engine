@@ -29,6 +29,8 @@ int main(int argc, char* argv[]) {
     auto converter = new ConverterJSON;
     auto invertedIndex = new InvertedIndex();
     invertedIndex->UpdateDocumentBase(converter->GetTextDocuments());
+    auto searchServer = new SearchServer(*invertedIndex);
+    searchServer->Search(converter->GetRequests());
 
     int o; std::cin >> o;
     return RUN_ALL_TESTS();

@@ -9,11 +9,13 @@ struct RelativeIndex {
 };
 
 class SearchServer {
-    InvertedIndex _index;
+    InvertedIndex index;
+
     public:
-    SearchServer(InvertedIndex& idx) : _index(idx) {
 
+    SearchServer(InvertedIndex& idx) : index(idx) {}
+
+    std::vector<std::vector<RelativeIndex>> Search(const std::vector<std::string>& queries_input) {
+        
     }
-
-    std::vector<std::vector<RelativeIndex>> search(const std::vector<std::string>& queries_input);
 };
