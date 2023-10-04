@@ -11,48 +11,55 @@ struct Entry {
 
 class InvertedIndex {
     std::vector<std::string> docs;
-    std::map<std::string, std::vector<Entry>> freq_dictionary;
-
-    std::mutex docsAccess;
+    std::map<std::string, std::vector<Entry>> freqDictionary;
     std::mutex dictAccess;
 
-    public:
-    InvertedIndex() = default;
+    void SortDict() {
+        for(auto& word:freqDictionary) {
+            for(int i = 0; i < word.second.size() - 1; i++) {
+                if (word.second[i].doc_id > word.second[i + 1].doc_id) {
+                    Entry tmp = word.second[i];
+                    word.second[i] = word.second[i + 1];
+                    word.second[i + 1] = tmp;
+                }
+            }
+        }
+    }
 
-    void indexation(const int i) {
-        docsAccess.lock();
+    void Indexation(const int i) {//todo multithreading
+        dictAccess.lock();
+
         std::stringstream stringStream(docs[i]);
-        docsAccess.unlock();
         do {
             std::string buffer;
             stringStream >> buffer;
-            dictAccess.lock();
-            
-            if(freq_dictionary.count(buffer) == 0) freq_dictionary[buffer] = std::vector<Entry>{Entry{(size_t)i, 1}};
+            if(freqDictionary.count(buffer) == 0) freqDictionary[buffer] = std::vector<Entry>{Entry{(size_t)i, 1}};
             else {
                 bool isFound = false;
-                for(int j = 0; j < freq_dictionary[buffer].size(); j++) {
-                    if(i == freq_dictionary[buffer][j].doc_id) {
+                for(int j = 0; j < freqDictionary[buffer].size(); j++) {
+                    if(i == freqDictionary[buffer][j].doc_id) {
                         isFound = true;
-                        freq_dictionary[buffer][j].count++;
+                        freqDictionary[buffer][j].count++;
                         break;
                     }
                 }
-                if (isFound == false) freq_dictionary[buffer].push_back(Entry{(size_t)i, 1});
+                if (isFound == false) freqDictionary[buffer].push_back(Entry{(size_t)i, 1});
             }
-
-            dictAccess.unlock();
         } while (stringStream);
+        
+
+        dictAccess.unlock();
     }
+
+    public:
 
     void UpdateDocumentBase (std::vector<std::string> input_docs) {
         docs = input_docs;
         std::vector<std::thread> threads;
-
-        for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::indexation, this, i));//indexation(i);
-        
+        for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::Indexation, this, i));
         for(int i = 0; i < docs.size(); i++) threads[i].join();
+        SortDict();
     }
 
-    std::vector<Entry> GetWordCount(const std::string& word) {return freq_dictionary[word];}
+    std::vector<Entry> GetWordCount(const std::string& word) {return freqDictionary[word];}
 };
