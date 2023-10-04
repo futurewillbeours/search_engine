@@ -17,22 +17,23 @@ class InvertedIndex {
     void SortDict() {
         for(auto& word:freqDictionary) {
             for(int i = 0; i < word.second.size() - 1; i++) {
-                if (word.second[i].doc_id > word.second[i + 1].doc_id) {
-                    Entry tmp = word.second[i];
-                    word.second[i] = word.second[i + 1];
-                    word.second[i + 1] = tmp;
+                for(int j = i + 1; j < word.second.size(); j++) {
+                    if (word.second[i].doc_id > word.second[i + 1].doc_id) {
+                        Entry tmp = word.second[i];
+                        word.second[i] = word.second[j];
+                        word.second[j] = tmp;
+                    }
                 }
             }
         }
     }
 
-    void Indexation(const int i) {//todo multithreading
-        dictAccess.lock();
-
+    void Indexation(const int i) {
         std::stringstream stringStream(docs[i]);
         do {
             std::string buffer;
             stringStream >> buffer;
+            dictAccess.lock();
             if(freqDictionary.count(buffer) == 0) freqDictionary[buffer] = std::vector<Entry>{Entry{(size_t)i, 1}};
             else {
                 bool isFound = false;
@@ -45,10 +46,8 @@ class InvertedIndex {
                 }
                 if (isFound == false) freqDictionary[buffer].push_back(Entry{(size_t)i, 1});
             }
+            dictAccess.unlock();
         } while (stringStream);
-        
-
-        dictAccess.unlock();
     }
 
     public:
