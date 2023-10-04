@@ -38,13 +38,7 @@ class InvertedIndex {
                         break;
                     }
                 }
-                if (isFound == false) {
-                    // std::vector<Entry> vec;
-                    // Entry entry;
-                    // entry.count = 1;
-                    // entry.doc_id = i;
-                    freq_dictionary[buffer].push_back(Entry{(size_t)i, 1});
-                }
+                if (isFound == false) freq_dictionary[buffer].push_back(Entry{(size_t)i, 1});
             }
 
             dictAccess.unlock();
