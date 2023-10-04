@@ -12,7 +12,7 @@ struct Entry {
 class InvertedIndex {
     std::vector<std::string> docs;
     std::map<std::string, std::vector<Entry>> freqDictionary;
-    std::mutex dictAccess;
+    std::mutex* dictAccess;
 
     void SortDict() {
         for(auto& word:freqDictionary) {
@@ -33,7 +33,7 @@ class InvertedIndex {
         do {
             std::string buffer;
             stringStream >> buffer;
-            dictAccess.lock();
+            dictAccess -> lock();
             if(freqDictionary.count(buffer) == 0) freqDictionary[buffer] = std::vector<Entry>{Entry{(size_t)i, 1}};
             else {
                 bool isFound = false;
@@ -46,13 +46,14 @@ class InvertedIndex {
                 }
                 if (isFound == false) freqDictionary[buffer].push_back(Entry{(size_t)i, 1});
             }
-            dictAccess.unlock();
+            dictAccess -> unlock();
         } while (stringStream);
     }
 
     public:
 
     void UpdateDocumentBase (std::vector<std::string> input_docs) {
+        dictAccess = new std::mutex();
         docs = input_docs;
         std::vector<std::thread> threads;
         for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::Indexation, this, i));
