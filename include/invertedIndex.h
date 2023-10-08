@@ -52,9 +52,7 @@ class InvertedIndex {
 
     public:
 
-    InvertedIndex() {
-        dictAccess = new std::mutex();
-    }
+    InvertedIndex() {dictAccess = new std::mutex();}
 
     void UpdateDocumentBase (std::vector<std::string> input_docs) {
         docs = input_docs;
