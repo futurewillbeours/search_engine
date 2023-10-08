@@ -32,7 +32,7 @@ class SearchServer {
     }
 
     void RequestProcessor (std::string request) {
-        //разбить запросы на отдельные слова
+        //разбить запрос на отдельные слова
         std::vector<std::string> words;
         std::stringstream strstm(request);
         while(!strstm.eof()) {
@@ -41,10 +41,45 @@ class SearchServer {
             words.push_back(buffer);
         }
 
-        //оставить только уникальные слова в запросах
-        for(int i = 0; i < words.size() - 1; i++) {
-            for(int j = i + 1; j < words.size(); j++) {
-                if(words[i])
+        //оставить только уникальные слова в запросе
+        std::vector<std::string> unique;
+        for(int i = 0; i < words.size(); i++) {
+            bool isFound = false;
+            for(int j = 0; j < unique.size(); j++) if(words[i] == unique[j]) isFound = true;
+            if (!isFound) unique.push_back(words[i]);
+        }
+        words = unique;
+
+        //сортировать слова по мере увеличения частоты
+        words = SortRequest(words);
+
+        //заполнить вектор документов
+        std::vector<size_t> docs;
+        for (auto& word:words) {
+            for(auto& entry:index.GetWordCount(word)) {
+                docs.push_back(entry.doc_id);
+            }
+        }
+
+        //оставить уникальные документы в docs
+        std::vector<size_t> uniqueDocs;
+        for(int i = 0; i < docs.size(); i++) {
+            bool isFound = false;
+            for(int j = 0; j < uniqueDocs.size(); j++) if(docs[i] == uniqueDocs[j]) isFound = true;
+            if (!isFound) uniqueDocs.push_back(docs[i]);
+        }
+        docs = uniqueDocs;
+
+        //оставить общие документы в docs
+        for (auto& word:words) {
+            std::vector<size_t> vec;
+            for(auto& entry:index.GetWordCount(word)) vec.push_back(entry.doc_id);
+            for(int i = 0; i < docs.size(); i++) {
+                bool isMatch = false;
+                for(int j = 0; j < vec.size(); j++) {
+                    if(docs[i] == vec[j]) isMatch = true;
+                }
+                if(!isMatch) 
             }
         }
     } 
