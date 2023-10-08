@@ -11,42 +11,58 @@ struct RelativeIndex {
 class SearchServer {
     InvertedIndex index;
 
+    size_t WordsAmount(std::string word) {// возвращает количество слова во все документах
+        size_t amount = 0;
+        std::vector<Entry> freqVec = index.GetWordCount(word);
+        for (auto& entry:freqVec) amount += entry.count;
+        return amount;
+    }
+
+    std::vector<std::string> SortRequest(std::vector<std::string> request) {//сортирует слова по общей частоте встречаемости
+        for(int i = 0; i < request.size() - 1; i++) {
+            for (int j = i + 1; j < request.size(); j++) {
+                if (WordsAmount(request[i]) > WordsAmount(request[j])) {
+                    std::string tmp = request[i];
+                    request[i] = request[j];
+                    request[j] = tmp;
+                }
+            }
+        }
+        return request;
+    }
+
     public:
 
     SearchServer(InvertedIndex& idx) : index(idx) {}
 
     std::vector<std::vector<RelativeIndex>> Search(const std::vector<std::string>& queriesInput) {
-        std::vector<std::vector<RelativeIndex>> result;
-        std::vector<std::string> uniqueWords;
-        for (int i = 0; i < queriesInput.size(); i++) {
-            bool isFound = false;
-            for (int j = 0; j < uniqueWords.size(); j++) {
-                if (queriesInput[i] == uniqueWords[j]) {
-                    isFound = true;
-                    break;
-                }
+        std::vector<std::vector<std::string>> requests;
+        for (auto& request:queriesInput) { //разбить запросы на отдельные слова
+            std::vector<std::string> vec;
+            std::stringstream strstm(request);
+            while(!strstm.eof()) {
+                std::string buffer;
+                strstm >> buffer;
+                vec.push_back(buffer);
             }
-            if(isFound == false) uniqueWords.push_back(queriesInput[i]);
+            requests.push_back(vec);
         }
 
-        std::map<std::string, size_t> freq;
-        for(auto& word:uniqueWords) {
-            for(int i = 0; i < index.GetWordCount(word).size(); i++) {
-                if (freq.count(word) == 0) freq[word] = index.GetWordCount(word)[i].count;
-                else freq[word] += index.GetWordCount(word)[i].count;
+        for (auto& request:requests) { //оставить только уникальные слова в запросах
+            std::vector<std::string> uniques;
+            for(auto& word:request) {
+                bool isFound = false;
+                for (auto& uniqWord:uniques) if (uniqWord == word) isFound = true;
+                if(!isFound) uniques.push_back(word);
             }
+            request = uniques;
         }
 
-        for (int i = 0; i < uniqueWords.size() - 1; i++) {
-            for (int j = i + 1; j < uniqueWords.size(); j++) {
-                if (freq[uniqueWords[i]] > freq[uniqueWords[j]]) {
-                    std::string tmp = uniqueWords[i];
-                    uniqueWords[i] = uniqueWords[j];
-                    uniqueWords[j] = tmp;
-                }
-            }
-        }
+        for (auto& request:requests) request = SortRequest(request); //сортировать слова от редких до частых
 
-        return result;
+        std::vector<std::vector<size_t>> docs;
+        
+
     }
+
 };
