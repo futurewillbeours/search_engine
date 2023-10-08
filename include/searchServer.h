@@ -31,6 +31,22 @@ class SearchServer {
         return request;
     }
 
+    std::vector<size_t> GetSubset(std::vector<size_t> docs, std::vector<size_t> vec) {//оставить только значения vec в docs
+        for(int i = 0; i < docs.size(); i++) {
+            bool isFind = false;
+            for (int j = 0; j < vec.size(); j++) if(docs[i] == vec[j]) isFind = true;
+            if(!isFind) {
+                for(std::vector<size_t>::iterator it = docs.begin(); it != docs.end(); ++it) {
+                    if(*it == docs[i]) {
+                        docs.erase(it);
+                        break;
+                    }
+                }
+            }
+        }
+        return docs;
+    }
+
     void RequestProcessor (std::string request) {
         //разбить запрос на отдельные слова
         std::vector<std::string> words;
@@ -74,14 +90,10 @@ class SearchServer {
         for (auto& word:words) {
             std::vector<size_t> vec;
             for(auto& entry:index.GetWordCount(word)) vec.push_back(entry.doc_id);
-            for(int i = 0; i < docs.size(); i++) {
-                bool isMatch = false;
-                for(int j = 0; j < vec.size(); j++) {
-                    if(docs[i] == vec[j]) isMatch = true;
-                }
-                if(!isMatch) 
-            }
+            docs = GetSubset(docs, vec);
         }
+
+        
     } 
 
     public:
