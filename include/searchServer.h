@@ -31,38 +31,33 @@ class SearchServer {
         return request;
     }
 
+    void RequestProcessor (std::string request) {
+        //разбить запросы на отдельные слова
+        std::vector<std::string> words;
+        std::stringstream strstm(request);
+        while(!strstm.eof()) {
+            std::string buffer;
+            strstm >> buffer;
+            words.push_back(buffer);
+        }
+
+        //оставить только уникальные слова в запросах
+        for(int i = 0; i < words.size() - 1; i++) {
+            for(int j = i + 1; j < words.size(); j++) {
+                if(words[i])
+            }
+        }
+    } 
+
     public:
 
     SearchServer(InvertedIndex& idx) : index(idx) {}
 
     std::vector<std::vector<RelativeIndex>> Search(const std::vector<std::string>& queriesInput) {
-        std::vector<std::vector<std::string>> requests;
-        for (auto& request:queriesInput) { //разбить запросы на отдельные слова
-            std::vector<std::string> vec;
-            std::stringstream strstm(request);
-            while(!strstm.eof()) {
-                std::string buffer;
-                strstm >> buffer;
-                vec.push_back(buffer);
-            }
-            requests.push_back(vec);
-        }
+        std::vector<std::vector<RelativeIndex>> result;
+        for (auto& request:queriesInput) RequestProcessor(request);
 
-        for (auto& request:requests) { //оставить только уникальные слова в запросах
-            std::vector<std::string> uniques;
-            for(auto& word:request) {
-                bool isFound = false;
-                for (auto& uniqWord:uniques) if (uniqWord == word) isFound = true;
-                if(!isFound) uniques.push_back(word);
-            }
-            request = uniques;
-        }
-
-        for (auto& request:requests) request = SortRequest(request); //сортировать слова от редких до частых
-
-        std::vector<std::vector<size_t>> docs;
-        
-
+        return result;
     }
 
 };
