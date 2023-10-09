@@ -47,9 +47,8 @@ class SearchServer {
         return docs;
     }
 
-    void RequestProcessor (std::string request) {
-        //разбить запрос на отдельные слова
-        std::vector<std::string> words;
+    std::vector<RelativeIndex> RequestProcessor (std::string request) {
+        std::vector<std::string> words; //разбить запрос на отдельные слова
         std::stringstream strstm(request);
         while(!strstm.eof()) {
             std::string buffer;
@@ -57,8 +56,7 @@ class SearchServer {
             words.push_back(buffer);
         }
 
-        //оставить только уникальные слова в запросе
-        std::vector<std::string> unique;
+        std::vector<std::string> unique; //оставить только уникальные слова в запросе
         for(int i = 0; i < words.size(); i++) {
             bool isFound = false;
             for(int j = 0; j < unique.size(); j++) if(words[i] == unique[j]) isFound = true;
@@ -66,19 +64,16 @@ class SearchServer {
         }
         words = unique;
 
-        //сортировать слова по мере увеличения частоты
-        words = SortRequest(words);
+        words = SortRequest(words); //сортировать слова по мере увеличения частоты
 
-        //заполнить вектор документов
-        std::vector<size_t> docs;
+        std::vector<size_t> docs; //заполнить вектор документов
         for (auto& word:words) {
             for(auto& entry:index.GetWordCount(word)) {
                 docs.push_back(entry.doc_id);
             }
         }
 
-        //оставить уникальные документы в docs
-        std::vector<size_t> uniqueDocs;
+        std::vector<size_t> uniqueDocs; //оставить уникальные документы в docs
         for(int i = 0; i < docs.size(); i++) {
             bool isFound = false;
             for(int j = 0; j < uniqueDocs.size(); j++) if(docs[i] == uniqueDocs[j]) isFound = true;
@@ -86,17 +81,35 @@ class SearchServer {
         }
         docs = uniqueDocs;
 
-        //оставить общие документы в docs
-        for (auto& word:words) {
+        for (auto& word:words) { //оставить общие документы в docs
             std::vector<size_t> vec;
             for(auto& entry:index.GetWordCount(word)) vec.push_back(entry.doc_id);
             docs = GetSubset(docs, vec);
         }
 
-        if (docs.size() == 0) {
-            
+        std::vector<std::pair<size_t, size_t>> absRel; //абсолюная релевантность для каждого документа
+        size_t maxRel = 0; // максимальная абсолютная релевантность
+        if(docs.size() != 0) { //посчитать RelativeIndex
+            for (auto& doc:docs) {
+                size_t absR = 0;
+                for (auto& word:words) {
+                    for (auto& n:index.GetWordCount(word)) {
+                        if(n.doc_id == doc) absR += n.count;
+                    }
+                }
+                absRel.push_back(std::pair<size_t, size_t>{doc, absR});
+                if (absR > maxRel) maxRel = absR;
+            }
+        } else {}
+        
+        std::vector<RelativeIndex> result;
+        for (auto& relPair:absRel) { //формируем вектор относительной релевантности
+            RelativeIndex relInd;
+            relInd.doc_id = relPair.first;
+            relInd.rank = relPair.second / maxRel;
         }
 
+        return result;
     } 
 
     public:
@@ -106,9 +119,7 @@ class SearchServer {
     std::vector<std::vector<RelativeIndex>> Search(const std::vector<std::string>& queriesInput) {
         std::vector<std::vector<RelativeIndex>> result;
         std::vector<std::vector<size_t>> docs;
-        for (auto& request:queriesInput) RequestProcessor(request);
-
-
+        for (auto& request:queriesInput) docs.push_back(RequestProcessor(request));
         return result;
     }
 
