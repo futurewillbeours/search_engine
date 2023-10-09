@@ -93,7 +93,10 @@ class SearchServer {
             docs = GetSubset(docs, vec);
         }
 
-        
+        if (docs.size() == 0) {
+            
+        }
+
     } 
 
     public:
@@ -102,7 +105,9 @@ class SearchServer {
 
     std::vector<std::vector<RelativeIndex>> Search(const std::vector<std::string>& queriesInput) {
         std::vector<std::vector<RelativeIndex>> result;
+        std::vector<std::vector<size_t>> docs;
         for (auto& request:queriesInput) RequestProcessor(request);
+
 
         return result;
     }

@@ -18,6 +18,16 @@
 #include "./include/tests.h"
 #include "./include/searchServer.h"
 
+std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vector<RelativeIndex>> search) {// функция преобразования аргументов
+    std::vector<std::vector<std::pair<int, float>>> result;
+    for(auto& s1:search) {
+        std::vector<std::pair<int, float>> vec;
+        for (auto& s2:s1) vec.push_back(std::pair<int, float>{(int)s2.doc_id, s2.rank});
+        result.push_back(vec);
+    }
+    return result;
+}
+
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
     
@@ -29,6 +39,7 @@ int main(int argc, char* argv[]) {
     invertedIndex->UpdateDocumentBase(converter->GetTextDocuments());
     auto searchServer = new SearchServer(*invertedIndex);
     searchServer->Search(converter->GetRequests());
+    converter -> putAnswers(transform(searchServer->Search(converter->GetRequests())));
 
     int o; std::cin >> o;
     return RUN_ALL_TESTS();
