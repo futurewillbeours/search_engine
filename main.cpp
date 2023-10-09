@@ -30,7 +30,6 @@ std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vecto
 
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
-    
     std::srand(std::time(nullptr));
     auto generator = new Generator;
     generator -> generate_state();
@@ -40,7 +39,6 @@ int main(int argc, char* argv[]) {
     auto searchServer = new SearchServer(*invertedIndex);
     searchServer->Search(converter->GetRequests());
     converter -> putAnswers(transform(searchServer->Search(converter->GetRequests())));
-
     int o; std::cin >> o;
     return RUN_ALL_TESTS();
 }

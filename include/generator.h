@@ -81,7 +81,7 @@ class Generator {
         requestsFile << requests;
         requestsFile.close();
     }
-
+    
     void generate_state() {
         generate_resources_files();
         generate_config();

@@ -121,5 +121,4 @@ class SearchServer {
         for (auto& request:queriesInput) result.push_back(RequestProcessor(request));
         return result;
     }
-
 };
