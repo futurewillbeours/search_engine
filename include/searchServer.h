@@ -118,8 +118,7 @@ class SearchServer {
 
     std::vector<std::vector<RelativeIndex>> Search(const std::vector<std::string>& queriesInput) {
         std::vector<std::vector<RelativeIndex>> result;
-        std::vector<std::vector<size_t>> docs;
-        for (auto& request:queriesInput) docs.push_back(RequestProcessor(request));
+        for (auto& request:queriesInput) result.push_back(RequestProcessor(request));
         return result;
     }
 
