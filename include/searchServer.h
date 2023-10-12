@@ -55,7 +55,7 @@ class SearchServer {
             strstm >> buffer;
             words.push_back(buffer);
         }
-
+        
         std::vector<std::string> unique; //оставить только уникальные слова в запросе
         for(int i = 0; i < words.size(); i++) {
             bool isFound = false;
@@ -63,6 +63,8 @@ class SearchServer {
             if (!isFound) unique.push_back(words[i]);
         }
         words = unique;
+
+        //correct
 
         words = SortRequest(words); //сортировать слова по мере увеличения частоты
 
@@ -118,7 +120,7 @@ class SearchServer {
 
     std::vector<std::vector<RelativeIndex>> Search(const std::vector<std::string>& queriesInput) {
         std::vector<std::vector<RelativeIndex>> result;
-        for (auto& request:queriesInput) result.push_back(RequestProcessor(request));
+        for (auto& request:queriesInput) result.push_back(RequestProcessor(request)); //mistake
         return result;
     }
 };

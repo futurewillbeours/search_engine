@@ -32,12 +32,11 @@ int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
     std::srand(std::time(nullptr));
     auto generator = new Generator;
-    generator -> generate_state();
+    generator -> generate_test_state();
     auto converter = new ConverterJSON;
     auto invertedIndex = new InvertedIndex();
     invertedIndex->UpdateDocumentBase(converter->GetTextDocuments());
     auto searchServer = new SearchServer(*invertedIndex);
-    searchServer->Search(converter->GetRequests());
     converter -> putAnswers(transform(searchServer->Search(converter->GetRequests())));
     int o; std::cin >> o;
     return RUN_ALL_TESTS();
