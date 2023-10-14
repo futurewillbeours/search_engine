@@ -66,6 +66,8 @@ class SearchServer {
 
         //correct
 
+        index.printFreqDict();
+
         words = SortRequest(words); //сортировать слова по мере увеличения частоты
 
         std::vector<size_t> docs; //заполнить вектор документов

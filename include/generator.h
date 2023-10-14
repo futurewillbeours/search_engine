@@ -89,28 +89,28 @@ class Generator {
     }
 
     void generate_test_state() {
-        const std::vector<std::string> docs = { "london is the capital of great britain",
-                                                "paris is the capital of france",
-                                                "berlin is the capital of germany",
-                                                "rome is the capital of italy",
-                                                "madrid is the capital of spain",
-                                                "lisboa is the capital of portugal",
-                                                "bern is the capital of switzerland",
-                                                "moscow is the capital of russia",
-                                                "kiev is the capital of ukraine",
-                                                "minsk is the capital of belarus",
-                                                "astana is the capital of kazakhstan",
-                                                "beijing is the capital of china",
-                                                "tokyo is the capital of japan",
-                                                "bangkok is the capital of thailand",
-                                                "welcome to moscow the capital of russia the third rome",
-                                                "amsterdam is the capital of netherlands",
-                                                "helsinki is the capital of finland",
-                                                "oslo is the capital of norway",
-                                                "stockholm is the capital of sweden",
-                                                "riga is the capital of latvia",
-                                                "tallinn is the capital of estonia",
-                                                "warsaw is the capital of poland" };
+        const std::vector<std::string> docs = { "london is the capital of great britain",//0
+                                                "paris is the capital of france",//1
+                                                "berlin is the capital of germany",//2
+                                                "rome is the capital of italy",//3
+                                                "madrid is the capital of spain",//4
+                                                "lisboa is the capital of portugal",//5
+                                                "bern is the capital of switzerland",//6
+                                                "moscow is the capital of russia",//7
+                                                "kiev is the capital of ukraine",//8
+                                                "minsk is the capital of belarus",//9
+                                                "astana is the capital of kazakhstan",//10
+                                                "beijing is the capital of china",//11
+                                                "tokyo is the capital of japan",//12
+                                                "bangkok is the capital of thailand",//13
+                                                "welcome to moscow the capital of russia the third rome",//14
+                                                "amsterdam is the capital of netherlands",//15
+                                                "helsinki is the capital of finland",//16
+                                                "oslo is the capital of norway",//17
+                                                "stockholm is the capital of sweden",//18
+                                                "riga is the capital of latvia",//19
+                                                "tallinn is the capital of estonia",//20
+                                                "warsaw is the capital of poland" };//21
         std::filesystem::remove_all(resourcesPath);
         std::filesystem::create_directories(resourcesPath);
         for (int i = 0; i < docs.size(); i++) {
