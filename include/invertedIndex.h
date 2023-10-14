@@ -63,4 +63,13 @@ class InvertedIndex {
     }
 
     std::vector<Entry> GetWordCount(const std::string& word) {return freqDictionary[word];}
+
+    void printFreqDict() {
+        std::map<std::string, std::vector<Entry>>::iterator it = freqDictionary.begin();
+        for(it; it != freqDictionary.end(); it++) {
+            std::cout << "word: \"" << it -> first << "\"\n";
+            for(auto& el:it -> second) std::cout << "doc_id: " << el.doc_id << ", count: " << el.count << std::endl;
+            std::cout << std::endl;
+        }
+    }
 };
