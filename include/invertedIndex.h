@@ -33,6 +33,7 @@ class InvertedIndex {
         do {
             std::string buffer;
             stringStream >> buffer;
+            if (buffer == "") break;
             dictAccess -> lock();
             if(freqDictionary.count(buffer) == 0) freqDictionary[buffer] = std::vector<Entry>{Entry{(size_t)i, 1}};
             else {
