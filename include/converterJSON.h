@@ -5,7 +5,7 @@ class ConverterJSON {
     public:
     ConverterJSON() = default;
 
-    std::vector<std::string> GetTextDocuments() {//check
+    std::vector<std::string> GetTextDocuments() {//
         std::vector<std::string> filesList;
         nlohmann::json config;
         std::ifstream configFile(PROJECT_FOLDER"config.json");

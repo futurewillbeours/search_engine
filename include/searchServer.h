@@ -47,6 +47,8 @@ class SearchServer {
         return docs;
     }
 
+    
+    
     std::vector<RelativeIndex> RequestProcessor (std::string request) {
         std::vector<std::string> words; //разбить запрос на отдельные слова
         std::stringstream strstm(request);
@@ -64,37 +66,31 @@ class SearchServer {
         }
         words = unique;
 
-        //correct
-
-        index.printFreqDict();
-
         words = SortRequest(words); //сортировать слова по мере увеличения частоты
 
-        std::vector<size_t> docs; //заполнить вектор документов
+        std::vector<size_t> commonDocs;//находит документы, в которых встречается первое слово
+        for (auto& el:index.GetWordCount(words[0])) commonDocs.push_back(el.doc_id);
+
+        std::vector<size_t> tmp;//оставить общие документы
         for (auto& word:words) {
-            for(auto& entry:index.GetWordCount(word)) {
-                docs.push_back(entry.doc_id);
+            for (auto& el:index.GetWordCount(word)) {
+                bool isFound = false;
+                for (auto& el2:commonDocs) if(el.doc_id == el2) isFound = true;
+                if (isFound) tmp.push_back(el.doc_id);
             }
         }
-
-        std::vector<size_t> uniqueDocs; //оставить уникальные документы в docs
-        for(int i = 0; i < docs.size(); i++) {
+        std::vector<size_t> tmp2;
+        for (int i = 0; i < tmp.size(); i++) {
             bool isFound = false;
-            for(int j = 0; j < uniqueDocs.size(); j++) if(docs[i] == uniqueDocs[j]) isFound = true;
-            if (!isFound) uniqueDocs.push_back(docs[i]);
+            for(int j = 0; j < tmp2.size(); j++) if(tmp[i] == tmp2[j]) isFound = true;
+            if (!isFound) tmp2.push_back(tmp[i]);
         }
-        docs = uniqueDocs;
-
-        for (auto& word:words) { //оставить общие документы в docs
-            std::vector<size_t> vec;
-            for(auto& entry:index.GetWordCount(word)) vec.push_back(entry.doc_id);
-            docs = GetSubset(docs, vec);
-        }
-
+        commonDocs = tmp2;
+        
         std::vector<std::pair<size_t, size_t>> absRel; //абсолюная релевантность для каждого документа
         size_t maxRel = 0; // максимальная абсолютная релевантность
-        if(docs.size() != 0) { //посчитать RelativeIndex
-            for (auto& doc:docs) {
+        if(commonDocs.size() != 0) { //посчитать RelativeIndex
+            for (auto& doc:commonDocs) {
                 size_t absR = 0;
                 for (auto& word:words) {
                     for (auto& n:index.GetWordCount(word)) {
@@ -105,12 +101,19 @@ class SearchServer {
                 if (absR > maxRel) maxRel = absR;
             }
         } else {}
-        
+
+        //correct
+
         std::vector<RelativeIndex> result;
         for (auto& relPair:absRel) { //формируем вектор относительной релевантности
             RelativeIndex relInd;
             relInd.doc_id = relPair.first;
-            relInd.rank = relPair.second / maxRel;
+            relInd.rank = relPair.second / (float)maxRel;
+            result.push_back(relInd);
+        }
+
+        for (auto& el:result) {
+            std::cout << "doc_id: " << el.doc_id << ", rank: " << el.rank << std::endl;
         }
 
         return result;

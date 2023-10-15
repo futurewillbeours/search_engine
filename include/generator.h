@@ -96,7 +96,7 @@ class Generator {
                                                 "madrid is the capital of spain",//4
                                                 "lisboa is the capital of portugal",//5
                                                 "bern is the capital of switzerland",//6
-                                                "moscow is the capital of russia",//7
+                                                "moscow is is the capital of russia",//7
                                                 "kiev is the capital of ukraine",//8
                                                 "minsk is the capital of belarus",//9
                                                 "astana is the capital of kazakhstan",//10
