@@ -80,8 +80,6 @@ class SearchServer {
         }
         docs = tmp;
         
-        //
-        
         std::vector<std::pair<size_t, size_t>> absRel; //абсолюная релевантность для каждого документа
         size_t maxRel = 0; // максимальная абсолютная релевантность
         for (auto& doc:docs) {//посчитать RelativeIndex
@@ -104,11 +102,17 @@ class SearchServer {
             result.push_back(relInd);
         }
 
-        for (auto& el:result) {
-            std::cout << "doc_id: " << el.doc_id << ", rank: " << el.rank << std::endl;
-        }
+        nlohmann::json config;
+        std::ifstream configFile(PROJECT_FOLDER"config.json");
+        configFile >> config;
+        configFile.close();
+        int responses = config["config"]["max_responses"];
 
-        //
+        int count = responses;
+        if(responses > result.size()) count = result.size();
+        std::vector<RelativeIndex> temp;
+        for (int i = 0; i < count; i++) temp.push_back(result[i]);
+        result = temp;
 
         return result;
     } 
@@ -119,7 +123,7 @@ class SearchServer {
 
     std::vector<std::vector<RelativeIndex>> Search(const std::vector<std::string>& queriesInput) {
         std::vector<std::vector<RelativeIndex>> result;
-        for (auto& request:queriesInput) result.push_back(RequestProcessor(request)); //mistake
+        for (auto& request:queriesInput) result.push_back(RequestProcessor(request));
         return result;
     }
 };

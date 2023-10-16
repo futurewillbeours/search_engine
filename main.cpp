@@ -47,9 +47,6 @@ int main(int argc, char* argv[]) {
     auto invertedIndex = new InvertedIndex();
     invertedIndex->UpdateDocumentBase(converter->GetTextDocuments());
     auto searchServer = new SearchServer(*invertedIndex);
-
-    //print_transform(transform(searchServer->Search(converter->GetRequests())));
-
     converter -> putAnswers(transform(searchServer->Search(converter->GetRequests())));
     int o; std::cin >> o;
     return RUN_ALL_TESTS();
