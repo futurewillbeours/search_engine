@@ -46,21 +46,24 @@ class ConverterJSON {
         return requestsList;
     }
 
-    void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers) {//проверить
+    void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers) {//исправить
         nlohmann::json answersJSON;
+        int count = this -> GetResponsesLimit();
         for(int i = 0; i < answers.size(); i++) {
+            
             if (answers[i].size() == 0) answersJSON["answers"]["request" + std::to_string(i)]["result"] = false;
             else if(answers[i].size() == 1) {
                 answersJSON["answers"]["request" + std::to_string(i)]["result"] = true;
                 answersJSON["answers"]["request" + std::to_string(i)]["docid"] = answers[i][0].first;
                 answersJSON["answers"]["request" + std::to_string(i)]["rank"] = answers[i][0].second;
-            } else {
+            } else {//
+                if (answers[i].size() < count) count = answers.size();
                 answersJSON["answers"]["request" + std::to_string(i)]["result"] = true;
-                for (int j = 0; j < answers[i].size(); j++) {
-                    answersJSON["answers"]["request" + std::to_string(i)]["relevance"]["docid"] = answers[i][j].first;;
-                    answersJSON["answers"]["request" + std::to_string(i)]["relevance"]["rank"] = answers[i][j].second;;
+                for (int j = 0; j < count; j++) {
+                    answersJSON["answers"]["request" + std::to_string(i)]["relevance"]["docid"].push_back(answers[i][j].first);
+                    answersJSON["answers"]["request" + std::to_string(i)]["relevance"]["rank"].push_back(answers[i][j].second);
                 }
-            }
+            }//
         }
         std::ofstream answersFile(PROJECT_FOLDER"answers.json");
         answersFile << answersJSON;

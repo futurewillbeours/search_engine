@@ -68,41 +68,35 @@ class SearchServer {
 
         words = SortRequest(words); //сортировать слова по мере увеличения частоты
 
-        std::vector<size_t> commonDocs;//находит документы, в которых встречается первое слово
-        for (auto& el:index.GetWordCount(words[0])) commonDocs.push_back(el.doc_id);
+        //correct
 
-        std::vector<size_t> tmp;//оставить общие документы
-        for (auto& word:words) {
-            for (auto& el:index.GetWordCount(word)) {
-                bool isFound = false;
-                for (auto& el2:commonDocs) if(el.doc_id == el2) isFound = true;
-                if (isFound) tmp.push_back(el.doc_id);
-            }
-        }
-        std::vector<size_t> tmp2;
-        for (int i = 0; i < tmp.size(); i++) {
+        std::vector<size_t> docs;//находит документы, в которых встречются слова
+        for (auto& word:words) for (auto& el:index.GetWordCount(word)) docs.push_back(el.doc_id);
+
+
+        std::vector<size_t> tmp;//оставить только уникальные документы в docs
+        for(int i = 0; i < docs.size(); i++) {
             bool isFound = false;
-            for(int j = 0; j < tmp2.size(); j++) if(tmp[i] == tmp2[j]) isFound = true;
-            if (!isFound) tmp2.push_back(tmp[i]);
+            for(int j = 0; j < tmp.size(); j++) if(docs[i] == tmp[j]) isFound = true;
+            if (!isFound) tmp.push_back(docs[i]);
         }
-        commonDocs = tmp2;
+        docs = tmp;
+        
+        //
         
         std::vector<std::pair<size_t, size_t>> absRel; //абсолюная релевантность для каждого документа
         size_t maxRel = 0; // максимальная абсолютная релевантность
-        if(commonDocs.size() != 0) { //посчитать RelativeIndex
-            for (auto& doc:commonDocs) {
-                size_t absR = 0;
-                for (auto& word:words) {
-                    for (auto& n:index.GetWordCount(word)) {
-                        if(n.doc_id == doc) absR += n.count;
-                    }
+        for (auto& doc:docs) {//посчитать RelativeIndex
+            size_t absR = 0;
+            for (auto& word:words) {
+                for (auto& n:index.GetWordCount(word)) {
+                    if(n.doc_id == doc) absR += n.count;
                 }
-                absRel.push_back(std::pair<size_t, size_t>{doc, absR});
-                if (absR > maxRel) maxRel = absR;
             }
-        } else {}
+            absRel.push_back(std::pair<size_t, size_t>{doc, absR});
+            if (absR > maxRel) maxRel = absR;
+        }
 
-        //correct
 
         std::vector<RelativeIndex> result;
         for (auto& relPair:absRel) { //формируем вектор относительной релевантности
