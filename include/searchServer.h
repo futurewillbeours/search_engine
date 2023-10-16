@@ -46,8 +46,6 @@ class SearchServer {
         }
         return docs;
     }
-
-    
     
     std::vector<RelativeIndex> RequestProcessor (std::string request) {
         std::vector<std::string> words; //разбить запрос на отдельные слова
@@ -109,6 +107,8 @@ class SearchServer {
         for (auto& el:result) {
             std::cout << "doc_id: " << el.doc_id << ", rank: " << el.rank << std::endl;
         }
+
+        //
 
         return result;
     } 
