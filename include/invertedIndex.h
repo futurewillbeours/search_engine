@@ -2,7 +2,6 @@
 
 #include <thread>
 #include <mutex>
-#include "generator.h"
 
 struct Entry {
     size_t doc_id, count;

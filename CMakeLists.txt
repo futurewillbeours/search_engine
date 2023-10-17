@@ -12,8 +12,7 @@ enable_testing()
 set(MY_SRC_DIR ${CMAKE_SOURCE_DIR})
 set(MY_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 set(SRC_LIST ${MY_SRC_DIR}/main.cpp)
-set(INCLUDE_LIST ${MY_INCLUDE_DIR}/generator.h
-                 ${MY_INCLUDE_DIR}/converterJSON.h
+set(INCLUDE_LIST ${MY_INCLUDE_DIR}/converterJSON.h
                  ${MY_INCLUDE_DIR}/invertedIndex.h
                  ${MY_INCLUDE_DIR}/tests.h
                  ${MY_INCLUDE_DIR}/searchServer.h

@@ -1,5 +1,4 @@
 #pragma once
-#include "generator.h"
 #include "invertedIndex.h"
 
 struct RelativeIndex {

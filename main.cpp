@@ -12,7 +12,6 @@
 #include "nlohmann/json.hpp"
 #include "gtest/gtest.h"
 
-#include "./include/generator.h"
 #include "./include/converterJSON.h"//All is OK
 #include "./include/invertedIndex.h"
 #include "./include/tests.h"//All is OK
@@ -34,8 +33,7 @@ std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vecto
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
     std::srand(std::time(nullptr));
-    auto generator = new Generator;
-    generator -> generate_test_state(0);//0-1
+    generate_test_state(0);//0-1
     auto converter = new ConverterJSON;
     auto invertedIndex = new InvertedIndex();
     invertedIndex->UpdateDocumentBase(converter->GetTextDocuments());

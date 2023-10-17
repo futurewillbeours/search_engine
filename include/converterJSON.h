@@ -1,9 +1,10 @@
 #pragma once
-//#include "generator.h"
 
 #include <vector>
 #include <string>
+
 #include "nlohmann/json.hpp"
+#include "constants.h"
 
 class ConverterJSON {
     public:

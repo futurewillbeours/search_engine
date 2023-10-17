@@ -1,5 +1,9 @@
 #pragma once
-#include "generator.h"
+
+#include <vector>
+
+#include "gtest/gtest.h"
+
 #include "invertedIndex.h"
 #include "searchServer.h"
 
