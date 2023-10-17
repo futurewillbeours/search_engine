@@ -13,9 +13,9 @@
 #include "gtest/gtest.h"
 
 #include "./include/converterJSON.h"//All is OK
-#include "./include/invertedIndex.h"
-#include "./include/tests.h"//All is OK
+#include "./include/invertedIndex.h"//All is OK
 #include "./include/searchServer.h"
+#include "./include/tests.h"//All is OK
 #include "./include/additional.h"
 
 //todo: исправить индексирование по многопоточности

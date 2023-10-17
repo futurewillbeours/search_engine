@@ -2,35 +2,18 @@
 
 #include <thread>
 #include <mutex>
-
 #include <vector>
 #include <map>
 #include <sstream>
 #include <iostream>
 
-struct Entry {
-    size_t doc_id, count;
-    bool operator == (const Entry& other) const {return (doc_id == other.doc_id && count == other.count);}
-};
+#include "structures.h"
+#include "additional.h"
 
 class InvertedIndex {
     std::vector<std::string> docs;
     std::map<std::string, std::vector<Entry>> freqDictionary;
     std::mutex* dictAccess;
-
-    void SortDict() {
-        for(auto& word:freqDictionary) {
-            for(int i = 0; i < word.second.size() - 1; i++) {
-                for(int j = i + 1; j < word.second.size(); j++) {
-                    if (word.second[i].doc_id > word.second[i + 1].doc_id) {
-                        Entry tmp = word.second[i];
-                        word.second[i] = word.second[j];
-                        word.second[j] = tmp;
-                    }
-                }
-            }
-        }
-    }
 
     void Indexation(const int i) {
         std::stringstream stringStream(docs[i]);
@@ -66,19 +49,21 @@ class InvertedIndex {
         std::vector<std::thread> threads;
         for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::Indexation, this, i));
         for(int i = 0; i < docs.size(); i++) threads[i].join();
-        SortDict();
+
+        for(auto& word:freqDictionary) {//сортировка
+            for(int i = 0; i < word.second.size() - 1; i++) {
+                for(int j = i + 1; j < word.second.size(); j++) {
+                    if (word.second[i].doc_id > word.second[i + 1].doc_id) {
+                        Entry tmp = word.second[i];
+                        word.second[i] = word.second[j];
+                        word.second[j] = tmp;
+                    }
+                }
+            }
+        }
 
         //for(int i = 0; i < docs.size(); i++) Indexation(i);
     }
 
     std::vector<Entry> GetWordCount(const std::string& word) {return freqDictionary[word];}
-
-    void printFreqDict() {
-        std::map<std::string, std::vector<Entry>>::iterator it = freqDictionary.begin();
-        for(it; it != freqDictionary.end(); it++) {
-            std::cout << "word: \"" << it -> first << "\"\n";
-            for(auto& el:it -> second) std::cout << "doc_id: " << el.doc_id << ", count: " << el.count << std::endl;
-            std::cout << std::endl;
-        }
-    }
 };

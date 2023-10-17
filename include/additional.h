@@ -3,8 +3,15 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <map>
+#include <vector>
+#include <fstream>
+#include <sstream>
+
+#include "nlohmann/json.hpp"
 
 #include "constants.h"
+#include "structures.h"
 
 // std::string to_eligible_number(int i){
 //     std::string eligibleNumber;
@@ -141,4 +148,14 @@ void print_transform(std::vector<std::vector<std::pair<int, float>>> result) {
         }
         std::cout << std::endl;
     }
+}
+
+std::map<std::string, std::vector<Entry>> printFreqDict(std::map<std::string, std::vector<Entry>> freqDictionary) {
+    std::map<std::string, std::vector<Entry>>::iterator it = freqDictionary.begin();
+    for(it; it != freqDictionary.end(); it++) {
+        std::cout << "word: \"" << it -> first << "\"\n";
+        for(auto& el:it -> second) std::cout << "doc_id: " << el.doc_id << ", count: " << el.count << std::endl;
+        std::cout << std::endl;
+    }
+    return freqDictionary;
 }
