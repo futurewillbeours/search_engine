@@ -15,7 +15,10 @@
 
 void generate_test_state(int s) {
     std::vector<std::vector<std::string>> docs(2);
-    docs[0] = { "milk milk milk milk water water water", "milk water water", "milk milk milk milk milk water water water water water", "americano cappuccino" };
+    docs[0] = { "milk milk milk milk water water water",
+                "milk water water",
+                "milk milk milk milk milk water water water water water",
+                "americano cappuccino" };
     docs[1] = { "london is the capital of great britain",
                 "paris is the capital of france",
                 "berlin is the capital of germany",
