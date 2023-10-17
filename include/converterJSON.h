@@ -10,7 +10,7 @@ class ConverterJSON {
     public:
     ConverterJSON() = default;
 
-    std::vector<std::string> GetTextDocuments() {//
+    std::vector<std::string> GetTextDocuments() {
         std::vector<std::string> filesList;
         nlohmann::json config;
         std::ifstream configFile(PROJECT_FOLDER"config.json");
@@ -51,7 +51,7 @@ class ConverterJSON {
         return requestsList;
     }
 
-    void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers) {//исправить
+    void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers) {
         nlohmann::json answersJSON;
         int count = this -> GetResponsesLimit();
         for(int i = 0; i < answers.size(); i++) {
