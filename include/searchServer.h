@@ -102,17 +102,29 @@ class SearchServer {
             result.push_back(relInd);
         }
 
-        nlohmann::json config;
+        nlohmann::json config;//считывает лимит ответов
         std::ifstream configFile(PROJECT_FOLDER"config.json");
         configFile >> config;
         configFile.close();
         int responses = config["config"]["max_responses"];
 
-        int count = responses;
+        int count = responses;//обрезает result до кол-ва ответов
         if(responses > result.size()) count = result.size();
         std::vector<RelativeIndex> temp;
         for (int i = 0; i < count; i++) temp.push_back(result[i]);
         result = temp;
+
+        // for (int i = 0; i < result.size() - 1; i++) {//сортировка по релевантности
+        //     for(int j = 1; j < result.size(); j++) {
+        //         if(result[i].rank < result[j].rank){
+        //             RelativeIndex ri;
+        //             ri.doc_id = result[i].doc_id;
+        //             ri.rank = result[i].rank;
+        //             result[i] = result[j];
+        //             result[j] = ri;
+        //         }
+        //     }
+        // }
 
         return result;
     } 
