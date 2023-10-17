@@ -59,11 +59,12 @@ class InvertedIndex {
         docs = input_docs;
         for (auto& doc:docs) std::cout << doc << std::endl;
 
-        // std::vector<std::thread> threads;
-        // for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::Indexation, this, i));
-        // for(int i = 0; i < docs.size(); i++) threads[i].join();
-        for(int i = 0; i < docs.size(); i++) Indexation(i);
-        //SortDict();
+        std::vector<std::thread> threads;
+        for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::Indexation, this, i));
+        for(int i = 0; i < docs.size(); i++) threads[i].join();
+        SortDict();
+
+        //for(int i = 0; i < docs.size(); i++) Indexation(i);
     }
 
     std::vector<Entry> GetWordCount(const std::string& word) {return freqDictionary[word];}

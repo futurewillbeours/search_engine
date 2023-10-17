@@ -17,8 +17,11 @@
 #include "./include/invertedIndex.h"
 #include "./include/tests.h"
 #include "./include/searchServer.h"
+#include "./include/additional.h"
 
-std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vector<RelativeIndex>> search) {// функция преобразования аргументов
+//todo: исправить индексирование по многопоточности
+
+std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vector<RelativeIndex>> search) {
     std::vector<std::vector<std::pair<int, float>>> result;
     for(auto& s1:search) {
         std::vector<std::pair<int, float>> vec;
@@ -28,15 +31,7 @@ std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vecto
     return result;
 }
 
-void print_transform(std::vector<std::vector<std::pair<int, float>>> result) {
-    for(int i = 0; i < result.size(); i++) {
-        std::cout << i << ", ";
-        for (int j = 0; j < result[i].size(); j++) {
-            std::cout << j << ": doc_id: " << result[i][j].first << ", rank: " << result[i][j].second << std::endl;
-        }
-        std::cout << std::endl;
-    }
-}
+
 
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
