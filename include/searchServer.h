@@ -17,22 +17,6 @@ class SearchServer {
         for (auto& entry:freqVec) amount += entry.count;
         return amount;
     }
-
-    std::vector<size_t> GetSubset(std::vector<size_t> docs, std::vector<size_t> vec) {//оставить только значения vec в docs
-        for(int i = 0; i < docs.size(); i++) {
-            bool isFind = false;
-            for (int j = 0; j < vec.size(); j++) if(docs[i] == vec[j]) isFind = true;
-            if(!isFind) {
-                for(std::vector<size_t>::iterator it = docs.begin(); it != docs.end(); ++it) {
-                    if(*it == docs[i]) {
-                        docs.erase(it);
-                        break;
-                    }
-                }
-            }
-        }
-        return docs;
-    }
     
     std::vector<RelativeIndex> RequestProcessor (std::string request) {
         std::vector<std::string> words; //разбить запрос на отдельные слова
