@@ -18,19 +18,6 @@ class SearchServer {
         return amount;
     }
 
-    std::vector<std::string> SortRequest(std::vector<std::string> request) {//сортирует слова по общей частоте встречаемости
-        for(int i = 0; i < request.size() - 1; i++) {
-            for (int j = i + 1; j < request.size(); j++) {
-                if (WordsAmount(request[i]) > WordsAmount(request[j])) {
-                    std::string tmp = request[i];
-                    request[i] = request[j];
-                    request[j] = tmp;
-                }
-            }
-        }
-        return request;
-    }
-
     std::vector<size_t> GetSubset(std::vector<size_t> docs, std::vector<size_t> vec) {//оставить только значения vec в docs
         for(int i = 0; i < docs.size(); i++) {
             bool isFind = false;
@@ -64,9 +51,15 @@ class SearchServer {
         }
         words = unique;
 
-        words = SortRequest(words); //сортировать слова по мере увеличения частоты
-
-        //correct
+        for(int i = 0; i < words.size() - 1; i++) {//сортирует слова по общей частоте встречаемости
+            for (int j = i + 1; j < words.size(); j++) {
+                if (WordsAmount(words[i]) > WordsAmount(words[j])) {
+                    std::string tmp = words[i];
+                    words[i] = words[j];
+                    words[j] = tmp;
+                }
+            }
+        }
 
         std::vector<size_t> docs;//находит документы, в которых встречются слова
         for (auto& word:words) for (auto& el:index.GetWordCount(word)) docs.push_back(el.doc_id);
