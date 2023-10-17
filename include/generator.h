@@ -5,10 +5,10 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
-#include "./include/additional.h"
+#include "additional.h"
 #include "nlohmann/json.hpp"
 #include "gtest/gtest.h"
-#include "./include/constants.h"
+#include "constants.h"
 
 std::filesystem::path resourcesPath(RESOURCES_FOLDER);
 
@@ -63,8 +63,9 @@ class Generator {
     //     generate_requests();
     // }
 
-    void generate_test_state() {
-        const std::vector<std::string> docs = {"milk milk milk milk water water water", "milk water water", "milk milk milk milk milk water water water water water", "americano cappuccino"};
+    void generate_test_state(int s) {
+        std::vector<std::vector<std::string>> docs;
+        const std::vector<std::string> docs1 = {"milk milk milk milk water water water", "milk water water", "milk milk milk milk milk water water water water water", "americano cappuccino"};
         const std::vector<std::string> docs2 = {"london is the capital of great britain",
                                             "paris is the capital of france",
                                             "berlin is the capital of germany",
@@ -72,7 +73,7 @@ class Generator {
                                             "madrid is the capital of spain",
                                             "lisboa is the capital of portugal",
                                             "bern is the capital of switzerland",
-                                            "moscow is the capital of russia",//7
+                                            "moscow is the capital of russia",
                                             "kiev is the capital of ukraine",
                                             "minsk is the capital of belarus",
                                             "astana is the capital of kazakhstan",
@@ -87,11 +88,13 @@ class Generator {
                                             "riga is the capital of latvia",
                                             "tallinn is the capital of estonia",
                                             "warsaw is the capital of poland"};
+        docs.push_back(docs1);
+        docs.push_back(docs2);
         std::filesystem::remove_all(resourcesPath);
         std::filesystem::create_directories(resourcesPath);
-        for (int i = 0; i < docs.size(); i++) {
+        for (int i = 0; i < docs[s].size(); i++) {
             std::ofstream file(RESOURCES_FOLDER"file" + std::to_string(i) + ".txt");
-                std::stringstream strstm(docs[i]);
+                std::stringstream strstm(docs[s][i]);
                 while(!strstm.eof()) {
                     std::string buffer;
                     strstm >> buffer;

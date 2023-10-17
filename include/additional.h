@@ -2,8 +2,9 @@
 
 #include <vector>
 #include <iostream>
-#include "./include/constants.h"
+#include <string>
 
+#include "constants.h"
 
 //generator.h
 std::string to_eligible_number(int i){
