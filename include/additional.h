@@ -14,32 +14,30 @@
 #include "structures.h"
 
 void generate_test_state(int s) {
-    std::vector<std::vector<std::string>> docs;
-    const std::vector<std::string> docs1 = {"milk milk milk milk water water water", "milk water water", "milk milk milk milk milk water water water water water", "americano cappuccino"};
-    const std::vector<std::string> docs2 = {"london is the capital of great britain",
-                                            "paris is the capital of france",
-                                            "berlin is the capital of germany",
-                                            "rome is the capital of italy",
-                                            "madrid is the capital of spain",
-                                            "lisboa is the capital of portugal",
-                                            "bern is the capital of switzerland",
-                                            "moscow is the capital of russia",
-                                            "kiev is the capital of ukraine",
-                                            "minsk is the capital of belarus",
-                                            "astana is the capital of kazakhstan",
-                                            "beijing is the capital of china",
-                                            "tokyo is the capital of japan",
-                                            "bangkok is the capital of thailand",
-                                            "welcome to moscow the capital of russia the third rome",
-                                            "amsterdam is the capital of netherlands",
-                                            "helsinki is the capital of finland",
-                                            "oslo is the capital of norway",
-                                            "stockholm is the capital of sweden",
-                                            "riga is the capital of latvia",
-                                            "tallinn is the capital of estonia",
-                                            "warsaw is the capital of poland"};
-    docs.push_back(docs1);
-    docs.push_back(docs2);
+    std::vector<std::vector<std::string>> docs(2);
+    docs[0] = { "milk milk milk milk water water water", "milk water water", "milk milk milk milk milk water water water water water", "americano cappuccino" };
+    docs[1] = { "london is the capital of great britain",
+                "paris is the capital of france",
+                "berlin is the capital of germany",
+                "rome is the capital of italy",
+                "madrid is the capital of spain",
+                "lisboa is the capital of portugal",
+                "bern is the capital of switzerland",
+                "moscow is the capital of russia",
+                "kiev is the capital of ukraine",
+                "minsk is the capital of belarus",
+                "astana is the capital of kazakhstan",
+                "beijing is the capital of china",
+                "tokyo is the capital of japan",
+                "bangkok is the capital of thailand",
+                "welcome to moscow the capital of russia the third rome",
+                "amsterdam is the capital of netherlands",
+                "helsinki is the capital of finland",
+                "oslo is the capital of norway",
+                "stockholm is the capital of sweden",
+                "riga is the capital of latvia",
+                "tallinn is the capital of estonia",
+                "warsaw is the capital of poland" };
     std::filesystem::path resourcesPath(RESOURCES_FOLDER);
     std::filesystem::remove_all(resourcesPath);
     std::filesystem::create_directories(resourcesPath);
