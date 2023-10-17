@@ -89,7 +89,8 @@ class Generator {
     }
 
     void generate_test_state() {
-        const std::vector<std::string> docs = {"london is the capital of great britain",
+        const std::vector<std::string> docs = {"milk milk milk milk water water water", "milk water water", "milk milk milk milk milk water water water water water", "americano cappuccino"};
+        const std::vector<std::string> docs2 = {"london is the capital of great britain",
                                             "paris is the capital of france",
                                             "berlin is the capital of germany",
                                             "rome is the capital of italy",
@@ -134,7 +135,8 @@ class Generator {
         configFile << config;
         configFile.close();
 
-        const std::vector<std::string> requests = {"moscow is the capital of russia"/*, "stockholm is the capital of sweden"*/};
+        const std::vector<std::string> requests = {"milk water", "sugar"};
+        const std::vector<std::string> requests2 = {"moscow is the capital of russia"/*, "stockholm is the capital of sweden"*/};
 
         nlohmann::json requestsJSON;
         requestsJSON["requests"] = nlohmann::json::array();
