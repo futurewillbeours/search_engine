@@ -1,5 +1,9 @@
 #pragma once
-#include "generator.h"
+//#include "generator.h"
+
+#include <vector>
+#include <string>
+#include "nlohmann/json.hpp"
 
 class ConverterJSON {
     public:
@@ -55,14 +59,14 @@ class ConverterJSON {
                 answersJSON["answers"]["request" + std::to_string(i)]["result"] = true;
                 answersJSON["answers"]["request" + std::to_string(i)]["docid"] = answers[i][0].first;
                 answersJSON["answers"]["request" + std::to_string(i)]["rank"] = answers[i][0].second;
-            } else {//
+            } else {
                 if (answers[i].size() < count) count = answers[i].size();
                 answersJSON["answers"]["request" + std::to_string(i)]["result"] = true;
                 for (int j = 0; j < count; j++) {
                     answersJSON["answers"]["request" + std::to_string(i)]["relevance"]["docid"].push_back(answers[i][j].first);
                     answersJSON["answers"]["request" + std::to_string(i)]["relevance"]["rank"].push_back(answers[i][j].second);
                 }
-            }//
+            }
         }
         std::ofstream answersFile(PROJECT_FOLDER"answers.json");
         answersFile << answersJSON;

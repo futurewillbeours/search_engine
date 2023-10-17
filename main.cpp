@@ -13,9 +13,9 @@
 #include "gtest/gtest.h"
 
 #include "./include/generator.h"
-#include "./include/converterJSON.h"
+#include "./include/converterJSON.h"//All is OK
 #include "./include/invertedIndex.h"
-#include "./include/tests.h"
+#include "./include/tests.h"//All is OK
 #include "./include/searchServer.h"
 #include "./include/additional.h"
 
@@ -31,8 +31,6 @@ std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vecto
     return result;
 }
 
-
-
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
     std::srand(std::time(nullptr));
@@ -43,7 +41,7 @@ int main(int argc, char* argv[]) {
     invertedIndex->UpdateDocumentBase(converter->GetTextDocuments());
     auto searchServer = new SearchServer(*invertedIndex);
 
-    print_transform(transform(searchServer->Search(converter->GetRequests())));
+    print_transform(transform(searchServer->Search(converter->GetRequests())));//отладка
 
     converter -> putAnswers(transform(searchServer->Search(converter->GetRequests())));
     int o; std::cin >> o;

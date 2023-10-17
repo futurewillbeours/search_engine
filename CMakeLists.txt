@@ -17,6 +17,7 @@ set(INCLUDE_LIST ${MY_INCLUDE_DIR}/generator.h
                  ${MY_INCLUDE_DIR}/invertedIndex.h
                  ${MY_INCLUDE_DIR}/tests.h
                  ${MY_INCLUDE_DIR}/searchServer.h
+                 ${MY_INCLUDE_DIR}/constants.h
                  ${MY_INCLUDE_DIR}/additional.h)
 
 set(CMAKE_CXX_STANDARD 17)
