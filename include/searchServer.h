@@ -48,7 +48,6 @@ class SearchServer {
         std::vector<size_t> docs;//находит документы, в которых встречются слова
         for (auto& word:words) for (auto& el:index.GetWordCount(word)) docs.push_back(el.doc_id);
 
-
         std::vector<size_t> tmp;//оставить только уникальные документы в docs
         for(int i = 0; i < docs.size(); i++) {
             bool isFound = false;
@@ -69,7 +68,6 @@ class SearchServer {
             absRel.push_back(std::pair<size_t, size_t>{doc, absR});
             if (absR > maxRel) maxRel = absR;
         }
-
 
         std::vector<RelativeIndex> result;
         for (auto& relPair:absRel) { //формируем вектор относительной релевантности
