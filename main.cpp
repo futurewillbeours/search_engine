@@ -32,7 +32,6 @@ std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vecto
 
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
-    std::srand(std::time(nullptr));
     generate_test_state(0);//0-1
     auto converter = new ConverterJSON;
     auto invertedIndex = new InvertedIndex();
