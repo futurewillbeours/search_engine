@@ -95,3 +95,13 @@ std::map<std::string, std::vector<Entry>> printFreqDict(std::map<std::string, st
     }
     return freqDictionary;
 }
+
+std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vector<RelativeIndex>> search) {
+    std::vector<std::vector<std::pair<int, float>>> result;
+    for(auto& s1:search) {
+        std::vector<std::pair<int, float>> vec;
+        for (auto& s2:s1) vec.push_back(std::pair<int, float>{(int)s2.doc_id, s2.rank});
+        result.push_back(vec);
+    }
+    return result;
+}
