@@ -19,6 +19,5 @@ int main(int argc, char* argv[]) {
     idx->UpdateDocumentBase(converter->GetTextDocuments());
     auto searchServer = new SearchServer(*idx);
     converter -> putAnswers(transform(searchServer->Search(converter->GetRequests())));
-    int o; std::cin >> o;
     return RUN_ALL_TESTS();
 }

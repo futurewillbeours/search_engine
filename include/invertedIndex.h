@@ -54,9 +54,7 @@ class InvertedIndex {
                 for(int i = 0; i < it -> second.size() - 1; i++) {
                     for(int j = i + 1; j < it -> second.size(); j++) {
                         if((it -> second)[i].doc_id > (it -> second)[j].doc_id) {
-                            Entry tmp;
-                            tmp.doc_id = it -> second[i].doc_id;
-                            tmp.count = it -> second[i].count;
+                            Entry tmp = {it -> second[i].doc_id, it -> second[i].count};
                             (it -> second)[i] = (it -> second)[j];
                             (it -> second)[j] = tmp;
                         }
