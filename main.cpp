@@ -12,13 +12,11 @@
 #include "nlohmann/json.hpp"
 #include "gtest/gtest.h"
 
-#include "./include/converterJSON.h"//All is OK
-#include "./include/invertedIndex.h"//All is OK
+#include "./include/converterJSON.h"
+#include "./include/invertedIndex.h"
 #include "./include/searchServer.h"
-#include "./include/tests.h"//All is OK
+#include "./include/tests.h"
 #include "./include/additional.h"
-
-//todo: исправить индексирование по многопоточности
 
 std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vector<RelativeIndex>> search) {
     std::vector<std::vector<std::pair<int, float>>> result;
@@ -37,9 +35,6 @@ int main(int argc, char* argv[]) {
     auto invertedIndex = new InvertedIndex();
     invertedIndex->UpdateDocumentBase(converter->GetTextDocuments());
     auto searchServer = new SearchServer(*invertedIndex);
-
-    print_transform(transform(searchServer->Search(converter->GetRequests())));//отладка
-
     converter -> putAnswers(transform(searchServer->Search(converter->GetRequests())));
     int o; std::cin >> o;
     return RUN_ALL_TESTS();
