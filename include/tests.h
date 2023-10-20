@@ -51,7 +51,7 @@ TEST(TestCaseSearchServer, TestSimple) {
 }
 
 TEST(TestCaseSearchServer, TestTop5) {
-    const std::vector<std::string> docs = {"london is the capital of great britain",
+    const std::vector<std::string> docs = { "london is the capital of great britain",
                                             "paris is the capital of france",
                                             "berlin is the capital of germany",
                                             "rome is the capital of italy",

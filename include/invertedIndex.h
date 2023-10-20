@@ -50,19 +50,22 @@ class InvertedIndex {
         for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::Indexation, this, i));
         for(int i = 0; i < docs.size(); i++) threads[i].join();
 
-        for(auto& word:freqDictionary) {//сортировка
-            for(int i = 0; i < word.second.size() - 1; i++) {
-                for(int j = i + 1; j < word.second.size(); j++) {
-                    if (word.second[i].doc_id > word.second[i + 1].doc_id) {
-                        Entry tmp = word.second[i];
-                        word.second[i] = word.second[j];
-                        word.second[j] = tmp;
+        for (auto it = freqDictionary.begin(); it != freqDictionary.end(); it++) {
+            if(it -> second.size() > 1) {
+                for(int i = 0; i < it -> second.size() - 1; i++) {
+                    for(int j = i + 1; j < it -> second.size(); j++) {
+                        if((it -> second)[i].doc_id > (it -> second)[j].doc_id) {
+                            Entry tmp;
+                            tmp.doc_id = it -> second[i].doc_id;
+                            tmp.count = it -> second[i].count;
+                            (it -> second)[i] = (it -> second)[j];
+                            (it -> second)[j] = tmp;
+                        }
                     }
                 }
             }
+            
         }
-
-        //for(int i = 0; i < docs.size(); i++) Indexation(i);
     }
 
     std::vector<Entry> GetWordCount(const std::string& word) {return freqDictionary[word];}
