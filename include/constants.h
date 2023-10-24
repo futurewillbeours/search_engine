@@ -8,6 +8,7 @@
 #define FILE_NUMBERS 10 //1000 by default
 #define MAX_REQUESTS 1000
 #define MAX_WORDS_IN_REQUEST 10
+#define UPDATE_TIME 100 //seconds
 
 //project parameters
 #define PROJECT_NAME "search_engine"

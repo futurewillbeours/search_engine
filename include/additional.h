@@ -58,6 +58,7 @@ void generate_test_state(int s) {
     nlohmann::json config;
     config["config"]["name"] = PROJECT_NAME;
     config["config"]["version"] = PROJECT_VERSION;
+    config["config"]["update_time"] = UPDATE_TIME;
     config["config"]["max_responses"] = MAX_RESPONSES;
     config["files"] = nlohmann::json::array();
     for (const auto & entry : std::filesystem::directory_iterator(RESOURCES_FOLDER)) config["files"].push_back(entry.path());
