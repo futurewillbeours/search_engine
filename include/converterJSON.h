@@ -38,7 +38,8 @@ class ConverterJSON {
         std::ifstream configFile(PROJECT_FOLDER"config.json");
         configFile >> config;
         configFile.close();
-        return config["config"]["max_responses"];
+        if (config["config"].contains("max_responses")) return config["config"]["max_responses"];
+        else return 5;
     }
 
     std::vector<std::string> GetRequests() {
