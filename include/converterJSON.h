@@ -23,6 +23,7 @@ class ConverterJSON {
             if(!config.contains("config")) throw std::runtime_error("Config file is empty");
             else {
                 if(config["config"].contains("name")) std::cout << "Search engine name: " << config["config"]["name"] << std::endl;
+                if(PROJECT_VERSION != config["config"]["version"]) std::cout << "config.json has incorrect file version" << std::endl;
                 for (auto& el : config["files"].items()) filesList.push_back(el.value());
                 std::vector<std::string> contentList;
                 for(int i = 0; i < filesList.size(); i++) {
