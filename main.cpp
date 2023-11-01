@@ -16,8 +16,10 @@ int main(int argc, char* argv[]) {
     generate_test_state(0);
     auto converter = new ConverterJSON;
     auto idx = new InvertedIndex();
-    idx->UpdateDocumentBase(converter->GetTextDocuments());
-    auto searchServer = new SearchServer(*idx);
-    converter -> putAnswers(transform(searchServer->Search(converter->GetRequests())));
+    try {
+        idx->UpdateDocumentBase(converter->GetTextDocuments());
+        auto searchServer = new SearchServer(*idx);
+        converter -> putAnswers(transform(searchServer->Search(converter->GetRequests())));
+    } catch (const std::runtime_error& x) {std::cerr << "Caught runtime_error exception: " << x.what() << std::endl;}
     return RUN_ALL_TESTS();
 }
