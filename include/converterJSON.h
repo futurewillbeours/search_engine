@@ -11,26 +11,35 @@ class ConverterJSON {
     ConverterJSON() = default;
 
     std::vector<std::string> GetTextDocuments() {
-        std::vector<std::string> filesList;
-        nlohmann::json config;
         std::ifstream configFile(PROJECT_FOLDER"config.json");
-        configFile >> config;
-        configFile.close();
-        for (auto& el : config["files"].items()) filesList.push_back(el.value());
-
-        std::vector<std::string> contentList;
-        for(int i = 0; i < filesList.size(); i++) {
-            std::ifstream file(filesList[i]);
-            std::string str = "";
-            while(!file.eof()) {
-                std::string buffer;
-                file >> buffer;
-                str += buffer + " ";
-            }
-            contentList.push_back(str);
-            file.close();
+        if(!configFile) {
+            throw std::runtime_error("Config file is missing");
+            configFile.close();
         }
-        return contentList;
+        else {
+            std::vector<std::string> filesList;
+            nlohmann::json config;
+            configFile >> config;
+            configFile.close();
+
+            if(!config.contains("config")) throw std::runtime_error("Config file is empty");
+            else {
+                for (auto& el : config["files"].items()) filesList.push_back(el.value());
+                std::vector<std::string> contentList;
+                for(int i = 0; i < filesList.size(); i++) {
+                    std::ifstream file(filesList[i]);
+                    std::string str = "";
+                    while(!file.eof()) {
+                        std::string buffer;
+                        file >> buffer;
+                        str += buffer + " ";
+                    }
+                    contentList.push_back(str);
+                    file.close();
+                }
+            return contentList;
+            }
+        }
     }
 
     int GetResponsesLimit() {
