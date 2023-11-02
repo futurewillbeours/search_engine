@@ -75,7 +75,24 @@ class ConverterJSON {
             requestsCount++;
         }
         if (requestsCount > MAX_REQUESTS) std::cout << "More than " << MAX_REQUESTS << " requests were skipped!\n";
-        return requestsList;
+        std::vector<std::string> requestsListNew;
+        for (auto& req:requestsList) {
+            std::stringstream strstm(req);
+            std::string buffer;
+            std::string str;
+            int wordsCount = 0;
+            while (!strstm.eof()) {
+                strstm >> buffer;
+                if (wordsCount < MAX_WORDS_IN_REQUEST) {
+                    str += buffer;
+                    str += " ";
+                }
+                wordsCount++;
+            }
+            requestsListNew.push_back(str);
+            if (wordsCount > MAX_WORDS_IN_REQUEST) std::cout << "More than " << MAX_WORDS_IN_REQUEST << " words in request were skipped!\n";
+        }
+        return requestsListNew;
     }
 
     void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers) {
