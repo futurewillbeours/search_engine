@@ -39,6 +39,7 @@ class ConverterJSON {
                             else std::cout << "Word " << buffer << " skipped: more than " << MAX_WORD_LENGTH << " characters!\n";
                             count++;
                         }
+                        if (count > MAX_WORDS_IN_DOC) std::cout << "More than " << MAX_WORDS_IN_DOC << " in docunents skipped!\n";
                         contentList.push_back(str);
                     }
                     file.close();
