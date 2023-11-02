@@ -5,6 +5,13 @@
 
 #include "nlohmann/json.hpp"
 #include "constants.h"
+#include "additional.h"
+
+std::string toEligNum(std::string number) {
+    if (number.length() == 1) number = "00" + number;
+    else if (number.length() == 2) number = "0" + number;
+    return number;
+}
 
 class ConverterJSON {
     public:
@@ -99,17 +106,17 @@ class ConverterJSON {
         nlohmann::json answersJSON;
         int count = this -> GetResponsesLimit();
         for(int i = 0; i < answers.size(); i++) {
-            if (answers[i].size() == 0) answersJSON["answers"]["request" + std::to_string(i)]["result"] = false;
+            if (answers[i].size() == 0) answersJSON["answers"]["request" + toEligNum(std::to_string(i))]["result"] = false;
             else if(answers[i].size() == 1) {
-                answersJSON["answers"]["request" + std::to_string(i)]["result"] = true;
-                answersJSON["answers"]["request" + std::to_string(i)]["docid"] = answers[i][0].first;
-                answersJSON["answers"]["request" + std::to_string(i)]["rank"] = answers[i][0].second;
+                answersJSON["answers"]["request" + toEligNum(std::to_string(i))]["result"] = true;
+                answersJSON["answers"]["request" + toEligNum(std::to_string(i))]["docid"] = answers[i][0].first;
+                answersJSON["answers"]["request" + toEligNum(std::to_string(i))]["rank"] = answers[i][0].second;
             } else {
                 if (answers[i].size() < count) count = answers[i].size();
-                answersJSON["answers"]["request" + std::to_string(i)]["result"] = true;
+                answersJSON["answers"]["request" + toEligNum(std::to_string(i))]["result"] = true;
                 for (int j = 0; j < count; j++) {
-                    answersJSON["answers"]["request" + std::to_string(i)]["relevance"]["docid"].push_back(answers[i][j].first);
-                    answersJSON["answers"]["request" + std::to_string(i)]["relevance"]["rank"].push_back(answers[i][j].second);
+                    answersJSON["answers"]["request" + toEligNum(std::to_string(i))]["relevance"]["docid"].push_back(answers[i][j].first);
+                    answersJSON["answers"]["request" + toEligNum(std::to_string(i))]["relevance"]["rank"].push_back(answers[i][j].second);
                 }
             }
         }
