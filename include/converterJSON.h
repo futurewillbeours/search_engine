@@ -28,13 +28,19 @@ class ConverterJSON {
                 std::vector<std::string> contentList;
                 for(int i = 0; i < filesList.size(); i++) {
                     std::ifstream file(filesList[i]);
-                    std::string str = "";
-                    while(!file.eof()) {
-                        std::string buffer;
-                        file >> buffer;
-                        str += buffer + " ";
+                    if(!file) std::cout << filesList[i] << " doesnt exist!\n";
+                    else {
+                        std::string str = "";
+                        int count = 0;
+                        while(!file.eof() || count < MAX_WORDS_IN_DOC) {
+                            std::string buffer;
+                            file >> buffer;
+                            if (buffer.length() <= MAX_WORD_LENGTH) str += buffer + " ";
+                            else std::cout << "Word " << buffer << " skipped: more than " << MAX_WORD_LENGTH << " characters!\n";
+                            count++;
+                        }
+                        contentList.push_back(str);
                     }
-                    contentList.push_back(str);
                     file.close();
                 }
             return contentList;
