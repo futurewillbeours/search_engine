@@ -27,9 +27,9 @@ class ConverterJSON {
                 int filesCount = 0;
                 for (auto& el : config["files"].items()) {
                     if (filesCount < FILE_NUMBERS) filesList.push_back(el.value());
-                    count++;
+                    filesCount++;
                 }
-                if (filesCount > 1000) std::cout << "More than " << FILE_NUMBERS << " were skipped!\n";
+                if (filesCount > FILE_NUMBERS) std::cout << "More than " << FILE_NUMBERS << " were skipped!\n";
                 std::vector<std::string> contentList;
                 for(int i = 0; i < filesList.size(); i++) {
                     std::ifstream file(filesList[i]);
@@ -69,7 +69,12 @@ class ConverterJSON {
         std::ifstream requestsFile(PROJECT_FOLDER"requests.json");
         requestsFile >> requests;
         requestsFile.close();
-        for (auto& el : requests["requests"].items()) requestsList.push_back(el.value());
+        int requestsCount = 0;
+        for (auto& el : requests["requests"].items()) {
+            if (requestsCount < MAX_REQUESTS) requestsList.push_back(el.value());
+            requestsCount++;
+        }
+        if (requestsCount > MAX_REQUESTS) std::cout << "More than " << MAX_REQUESTS << " requests were skipped!\n";
         return requestsList;
     }
 
