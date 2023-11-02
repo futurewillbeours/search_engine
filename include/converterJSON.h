@@ -24,7 +24,12 @@ class ConverterJSON {
             else {
                 if(config["config"].contains("name")) std::cout << "Search engine name: " << config["config"]["name"] << std::endl;
                 if(PROJECT_VERSION != config["config"]["version"]) std::cout << "config.json has incorrect file version" << std::endl;
-                for (auto& el : config["files"].items()) filesList.push_back(el.value());
+                int filesCount = 0;
+                for (auto& el : config["files"].items()) {
+                    if (filesCount < FILE_NUMBERS) filesList.push_back(el.value());
+                    count++;
+                }
+                if (filesCount > 1000) std::cout << "More than " << FILE_NUMBERS << " were skipped!\n";
                 std::vector<std::string> contentList;
                 for(int i = 0; i < filesList.size(); i++) {
                     std::ifstream file(filesList[i]);
@@ -39,7 +44,7 @@ class ConverterJSON {
                             else std::cout << "Word " << buffer << " skipped: more than " << MAX_WORD_LENGTH << " characters!\n";
                             count++;
                         }
-                        if (count > MAX_WORDS_IN_DOC) std::cout << "More than " << MAX_WORDS_IN_DOC << " in docunents skipped!\n";
+                        if (count > MAX_WORDS_IN_DOC) std::cout << "More than " << MAX_WORDS_IN_DOC << " in docunents were skipped!\n";
                         contentList.push_back(str);
                     }
                     file.close();
