@@ -11,14 +11,14 @@
 class SearchServer {
     InvertedIndex index;
 
-    size_t WordsAmount(std::string word) {// возвращает количество слова во все документах
+    size_t wordsAmount(std::string word) {// возвращает количество слова во все документах
         size_t amount = 0;
-        std::vector<Entry> freqVec = index.GetWordCount(word);
+        std::vector<Entry> freqVec = index.getWordCount(word);
         for (auto& entry:freqVec) amount += entry.count;
         return amount;
     }
     
-    std::vector<RelativeIndex> RequestProcessor (std::string request) {
+    std::vector<RelativeIndex> requestProcessor (std::string request) {
         std::vector<std::string> words; //разбить запрос на отдельные слова
         std::stringstream strstm(request);
         while(!strstm.eof()) {
@@ -37,7 +37,7 @@ class SearchServer {
 
         for(int i = 0; i < words.size() - 1; i++) {//сортирует слова по общей частоте встречаемости
             for (int j = i + 1; j < words.size(); j++) {
-                if (WordsAmount(words[i]) > WordsAmount(words[j])) {
+                if (wordsAmount(words[i]) > wordsAmount(words[j])) {
                     std::string tmp = words[i];
                     words[i] = words[j];
                     words[j] = tmp;
@@ -46,7 +46,7 @@ class SearchServer {
         }
 
         std::vector<size_t> docs;//находит документы, в которых встречются слова
-        for (auto& word:words) for (auto& el:index.GetWordCount(word)) docs.push_back(el.doc_id);
+        for (auto& word:words) for (auto& el:index.getWordCount(word)) docs.push_back(el.doc_id);
 
         std::vector<size_t> tmp;//оставить только уникальные документы в docs
         for(int i = 0; i < docs.size(); i++) {
@@ -61,7 +61,7 @@ class SearchServer {
         for (auto& doc:docs) {//посчитать RelativeIndex
             size_t absR = 0;
             for (auto& word:words) {
-                for (auto& n:index.GetWordCount(word)) {
+                for (auto& n:index.getWordCount(word)) {
                     if(n.doc_id == doc) absR += n.count;
                 }
             }
@@ -108,9 +108,9 @@ class SearchServer {
 
     SearchServer(InvertedIndex& idx) : index(idx) {}
 
-    std::vector<std::vector<RelativeIndex>> Search(const std::vector<std::string>& queriesInput) {
+    std::vector<std::vector<RelativeIndex>> search(const std::vector<std::string>& queriesInput) {
         std::vector<std::vector<RelativeIndex>> result;
-        for (auto& request:queriesInput) result.push_back(RequestProcessor(request));
+        for (auto& request:queriesInput) result.push_back(requestProcessor(request));
         return result;
     }
 };

@@ -13,7 +13,7 @@
 #include "constants.h"
 #include "structures.h"
 
-void generate_test_state(int s) {
+void generateTestState(int s) {
     std::vector<std::vector<std::string>> docs(2);
     docs[0] = { "milk milk milk milk water water water",
                 "milk water water",
@@ -77,7 +77,7 @@ void generate_test_state(int s) {
     requestsFile.close();
 }
 
-void print_transform(std::vector<std::vector<std::pair<int, float>>> result) {
+void printTransform(std::vector<std::vector<std::pair<int, float>>> result) {
     for(int i = 0; i < result.size(); i++) {
         std::cout << i << ", ";
         for (int j = 0; j < result[i].size(); j++) {

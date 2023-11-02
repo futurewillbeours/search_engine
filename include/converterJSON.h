@@ -11,7 +11,7 @@ class ConverterJSON {
     public:
     ConverterJSON() = default;
 
-    std::vector<std::string> GetTextDocuments() {
+    std::vector<std::string> getTextDocuments() {
         std::ifstream configFile(PROJECT_FOLDER"config.json");
         if(!configFile) {
             throw std::runtime_error("Config file is missing");
@@ -55,7 +55,7 @@ class ConverterJSON {
         }
     }
 
-    int GetResponsesLimit() {
+    int getResponsesLimit() {
         nlohmann::json config;
         std::ifstream configFile(PROJECT_FOLDER"config.json");
         configFile >> config;
@@ -64,7 +64,7 @@ class ConverterJSON {
         else return 5;
     }
 
-    std::vector<std::string> GetRequests() {
+    std::vector<std::string> getRequests() {
         std::vector<std::string> requestsList;
         nlohmann::json requests;
         std::ifstream requestsFile(PROJECT_FOLDER"requests.json");
@@ -98,7 +98,7 @@ class ConverterJSON {
 
     void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers) {
         nlohmann::json answersJSON;
-        int count = this -> GetResponsesLimit();
+        int count = this -> getResponsesLimit();
         for(int i = 0; i < answers.size(); i++) {
             if (answers[i].size() == 0) answersJSON["answers"]["request" + toEligNum(std::to_string(i))]["result"] = false;
             else if(answers[i].size() == 1) {

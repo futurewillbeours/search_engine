@@ -10,9 +10,9 @@
 void TestInvertedIndexFunctionality (const std::vector<std::string>& docs, const std::vector<std::string>& requests, const std::vector<std::vector<Entry>>& expected) {
     std::vector<std::vector<Entry>> result;
     InvertedIndex idx;
-    idx.UpdateDocumentBase(docs);
+    idx.updateDocumentBase(docs);
     for(auto& request : requests) {
-        std::vector<Entry> word_count = idx.GetWordCount(request);
+        std::vector<Entry> word_count = idx.getWordCount(request);
         result.push_back(word_count);
     }
     ASSERT_EQ(result, expected);
@@ -44,9 +44,9 @@ TEST(TestCaseSearchServer, TestSimple) {
     const std::vector<std::string> request = {"milk water", "sugar"};
     const std::vector<std::vector<RelativeIndex>> expected = { { {2, 1}, {0, 0.7}, {1, 0.3} }, { } };
     InvertedIndex idx;
-    idx.UpdateDocumentBase(docs);
+    idx.updateDocumentBase(docs);
     SearchServer srv(idx);
-    std::vector<std::vector<RelativeIndex>> result = srv.Search(request);
+    std::vector<std::vector<RelativeIndex>> result = srv.search(request);
     ASSERT_EQ(result, expected);
 }
 
@@ -76,8 +76,8 @@ TEST(TestCaseSearchServer, TestTop5) {
     const std::vector<std::string> request = {"moscow is the capital of russia"};
     const std::vector<std::vector<RelativeIndex>> expected = { { {7, 1}, {14, 1}, {0, 0.666666687}, {1, 0.666666687}, {2, 0.666666687} } };
     InvertedIndex idx;
-    idx.UpdateDocumentBase(docs);
+    idx.updateDocumentBase(docs);
     SearchServer srv(idx);
-    std::vector<std::vector<RelativeIndex>> result = srv.Search(request);
+    std::vector<std::vector<RelativeIndex>> result = srv.search(request);
     ASSERT_EQ(result, expected);
 }

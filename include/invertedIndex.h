@@ -15,7 +15,7 @@ class InvertedIndex {
     std::map<std::string, std::vector<Entry>> freqDictionary;
     std::mutex* dictAccess;
 
-    void Indexation(const int i) {
+    void indexation(const int i) {
         std::stringstream stringStream(docs[i]);
         do {
             std::string buffer;
@@ -42,11 +42,11 @@ class InvertedIndex {
 
     InvertedIndex() {dictAccess = new std::mutex();}
 
-    void UpdateDocumentBase (std::vector<std::string> input_docs) {
+    void updateDocumentBase (std::vector<std::string> input_docs) {
         docs = input_docs;
 
         std::vector<std::thread> threads;
-        for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::Indexation, this, i));
+        for(int i = 0; i < docs.size(); i++) threads.push_back(std::thread(&InvertedIndex::indexation, this, i));
         for(int i = 0; i < docs.size(); i++) threads[i].join();
 
         for (auto it = freqDictionary.begin(); it != freqDictionary.end(); it++) {
@@ -65,5 +65,5 @@ class InvertedIndex {
         }
     }
 
-    std::vector<Entry> GetWordCount(const std::string& word) {return freqDictionary[word];}
+    std::vector<Entry> getWordCount(const std::string& word) {return freqDictionary[word];}
 };

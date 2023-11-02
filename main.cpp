@@ -13,13 +13,13 @@
 
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
-    generate_test_state(0);
+    generateTestState(0);
     auto converter = new ConverterJSON;
     auto idx = new InvertedIndex();
     try {
-        idx->UpdateDocumentBase(converter->GetTextDocuments());
+        idx->updateDocumentBase(converter->getTextDocuments());
         auto searchServer = new SearchServer(*idx);
-        converter -> putAnswers(transform(searchServer->Search(converter->GetRequests())));
+        converter -> putAnswers(transform(searchServer->search(converter->getRequests())));
     } catch (const std::runtime_error& x) {std::cerr << "Caught runtime_error exception: " << x.what() << std::endl;}
     return RUN_ALL_TESTS();
 }
