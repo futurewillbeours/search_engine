@@ -4,7 +4,7 @@
 #define MAX_WORD_LENGTH 100
 #define MAX_WORDS_IN_DOC 1000
 #define PROJECT_FOLDER "../../search_engine/"
-#define RESOURCES_FOLDER "../../search_engine/resources/"
+#define RESOURCES_FOLDER PROJECT_FOLDER"/resources/"
 #define FILE_NUMBERS 1000
 #define MAX_REQUESTS 1000
 #define MAX_WORDS_IN_REQUEST 10
