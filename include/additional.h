@@ -106,3 +106,9 @@ std::vector<std::vector<std::pair<int, float>>> transform(std::vector<std::vecto
     }
     return result;
 }
+
+std::string toEligNum(std::string number) {
+    if (number.length() == 1) number = "00" + number;
+    else if (number.length() == 2) number = "0" + number;
+    return number;
+}
