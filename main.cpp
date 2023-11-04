@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
         idx->updateDocumentBase(converter->getTextDocuments());
         auto searchServer = new SearchServer(*idx);
         converter -> putAnswers(transform(searchServer->search(converter->getRequests())));
+        std::cout << "Program finished, answers.json file created!\n";
     } catch (const std::runtime_error& x) {std::cerr << "Caught runtime_error exception: " << x.what() << std::endl;}
     return RUN_ALL_TESTS();
 }
