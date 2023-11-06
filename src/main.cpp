@@ -5,11 +5,11 @@
 #include "nlohmann/json.hpp"
 #include "gtest/gtest.h"
 
-#include "./include/converterJSON.h"
-#include "./include/invertedIndex.h"
-#include "./include/searchServer.h"
-#include "./include/tests.h"
-#include "./include/additional.h"
+#include "./../include/converterJSON.h"
+#include "./../include/invertedIndex.h"
+#include "./../include/searchServer.h"
+#include "./../include/tests.h"
+#include "./../include/additional.h"
 
 int main(int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
