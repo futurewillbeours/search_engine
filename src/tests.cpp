@@ -2,9 +2,11 @@
 #include "gtest/gtest.h"
 
 #include "./../include/tests.h"
+#include "./../include/additional.h"
 
 int main (int argc, char* argv[]) {
     ::testing::InitGoogleTest(&argc, argv);
-
-    return RUN_ALL_TESTS();
+    generateTestState(0);
+    RUN_ALL_TESTS();
+    deleteTestState();
 }

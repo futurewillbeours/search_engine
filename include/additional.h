@@ -77,6 +77,14 @@ void generateTestState(int s) {
     requestsFile.close();
 }
 
+void deleteTestState() {
+    std::filesystem::path resourcesPath(RESOURCES_FOLDER);
+    std::filesystem::remove_all(resourcesPath);
+    std::filesystem::remove(PROJECT_FOLDER"config.json");
+    std::filesystem::remove(PROJECT_FOLDER"answers.json");
+    std::filesystem::remove(PROJECT_FOLDER"requests.json");
+}
+
 void printTransform(std::vector<std::vector<std::pair<int, float>>> result) {
     for(int i = 0; i < result.size(); i++) {
         std::cout << i << ", ";

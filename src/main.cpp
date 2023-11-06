@@ -7,11 +7,9 @@
 #include "./../include/converterJSON.h"
 #include "./../include/invertedIndex.h"
 #include "./../include/searchServer.h"
-#include "./../include/tests.h"
 #include "./../include/additional.h"
 
 int main(int argc, char* argv[]) {
-    generateTestState(0);
     auto converter = new ConverterJSON;
     auto idx = new InvertedIndex();
     try {
