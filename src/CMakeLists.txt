@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.17)
+add_executable(search_engine ${INCLUDE_LIST} ${MY_SRC_DIR}/main.cpp)
+add_executable(search_engine_test ${INCLUDE_LIST} ${MY_SRC_DIR}/tests.cpp)
+
+target_link_libraries(search_engine PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(search_engine_test PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(search_engine PRIVATE gtest_main)
+target_link_libraries(search_engine_test PRIVATE gtest_main)
+include(GoogleTest)
+gtest_discover_tests(search_engine_test)
