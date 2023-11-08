@@ -1,3 +1,4 @@
+rmdir -Recurse build
 cmake -S. -Bbuild
 cmake --build build
-rm .\search_engine
+rmdir -Recurse .\search_engine
