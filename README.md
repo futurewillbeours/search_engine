@@ -2,7 +2,7 @@
 ## Описание
 Эта программа - многопоточный локальный консольный поисковый движок по файлам, который позволяет по файлам JSON формировать запросы и выводить результаты поиска также в файл JSON.
 ## Технологии в проекте
-Для работы программы используются язык С++, библиотеки [nlohmann/json: JSON for Modern C++](https://github.com/nlohmann/json) и [GoogleTest](https://github.com/google/googletest), а также утилита сборки CMake. Библиотека nlohmann/json: JSON for Modern C++ встрена в каталог проекта в папке nlohmann_json. GoogleTest соединяется с проектом через файл CMakeLists.txt.
+Для работы программы используются язык С++, библиотеки [nlohmann/json: JSON for Modern C++](https://github.com/nlohmann/json) и [GoogleTest](https://github.com/google/googletest), а также утилита сборки CMake. Библиотека nlohmann/json: JSON for Modern C++ встрена в каталог проекта в папке nlohmann_json. GoogleTest загружается через сеть Интернет автоматически и соединяется с проектом через файл CMakeLists.txt.
 ## Техническое описание проекта
 ###  Сборка, запуск и тестирование программы
 Чтобы собрать программу, вы можете открыть папку проекта в командной строке Windows PowerShell и выполнить команду:
