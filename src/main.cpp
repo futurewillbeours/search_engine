@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <memory>
 
 #include "nlohmann/json.hpp"
 
@@ -10,18 +11,19 @@
 #include "./../include/additional.h"
 
 int main(int argc, char* argv[]) {
-    auto converter = new ConverterJSON;
-    auto idx = new InvertedIndex();
+    generateTestState(0);
+    std::unique_ptr<ConverterJSON> converterPtr = std::make_unique<ConverterJSON>();
+    std::unique_ptr<InvertedIndex> idxPtr = std::make_unique<InvertedIndex>();
     try {
-        idx->updateDocumentBase(converter->getTextDocuments());
-        auto searchServer = new SearchServer(*idx);
-        converter -> putAnswers(transform(searchServer->search(converter->getRequests())));
+        idxPtr.get() -> updateDocumentBase(converterPtr.get() -> getTextDocuments());
+        std::unique_ptr<SearchServer> searchServerPtr = std::make_unique<SearchServer>(*(idxPtr.get()));
+        converterPtr.get() -> putAnswers(transform(searchServerPtr.get() -> search(converterPtr.get() -> getRequests())));
         std::cout << "Program finished, answers.json file created!\n";
     } catch (const std::runtime_error& x) {
         std::cerr << "Caught runtime_error exception: " << x.what() << std::endl;
         std::cout << "Program finished with runtime error!\n";
     } catch (const nlohmann::json_abi_v3_11_2::detail::parse_error& x) {
         std::cerr << "Caught nlohmann_json exception: " << x.what() << std::endl;
-        std::cout << "Program finished with nlohmann_json file error!\n";
+        std::cout << "Program finished with JSON file parse error!\n";
     }
 }
