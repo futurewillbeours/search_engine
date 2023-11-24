@@ -11,7 +11,7 @@
 #include "./../include/additional.h"
 
 int main(int argc, char* argv[]) {
-    generateTestState(0);
+    //generateTestState(0);
     std::unique_ptr<ConverterJSON> converterPtr = std::make_unique<ConverterJSON>();
     std::unique_ptr<InvertedIndex> idxPtr = std::make_unique<InvertedIndex>();
     try {
