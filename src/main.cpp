@@ -12,8 +12,8 @@
 
 int main(int argc, char* argv[]) {
     //generateTestState(0);
-    std::unique_ptr<ConverterJSON> converterPtr = std::make_unique<ConverterJSON>();
-    std::unique_ptr<InvertedIndex> idxPtr = std::make_unique<InvertedIndex>();
+    auto converterPtr = std::make_unique<ConverterJSON>();
+    auto idxPtr = std::make_unique<InvertedIndex>();
     try {
         idxPtr.get() -> updateDocumentBase(converterPtr.get() -> getTextDocuments());
         std::unique_ptr<SearchServer> searchServerPtr = std::make_unique<SearchServer>(*(idxPtr.get()));

@@ -58,42 +58,52 @@ class ConverterJSON {
     int getResponsesLimit() {
         nlohmann::json config;
         std::ifstream configFile(PROJECT_FOLDER"config.json");
-        configFile >> config;
-        configFile.close();
-        if (config["config"].contains("max_responses")) return config["config"]["max_responses"];
-        else return 5;
+        if(!configFile) {
+            throw std::runtime_error("Config file is missing");
+            configFile.close();
+        } else {
+            configFile >> config;
+            configFile.close();
+            if (config["config"].contains("max_responses")) return config["config"]["max_responses"];
+            else return 5;
+        }
     }
 
     std::vector<std::string> getRequests() {
         std::vector<std::string> requestsList;
         nlohmann::json requests;
         std::ifstream requestsFile(PROJECT_FOLDER"requests.json");
-        requestsFile >> requests;
-        requestsFile.close();
-        int requestsCount = 0;
-        for (auto& el : requests["requests"].items()) {
-            if (requestsCount < MAX_REQUESTS) requestsList.push_back(el.value());
-            requestsCount++;
-        }
-        if (requestsCount > MAX_REQUESTS) std::cout << "More than " << MAX_REQUESTS << " requests were skipped!\n";
-        std::vector<std::string> requestsListNew;
-        for (auto& req:requestsList) {
-            std::stringstream strstm(req);
-            std::string buffer;
-            std::string str;
-            int wordsCount = 0;
-            while (!strstm.eof()) {
-                strstm >> buffer;
-                if (wordsCount < MAX_WORDS_IN_REQUEST) {
-                    str += buffer;
-                    str += " ";
-                }
-                wordsCount++;
+        if(!requestsFile) {
+            throw std::runtime_error("Requests file is missing");
+            requestsFile.close();
+        } else {
+            requestsFile >> requests;
+            requestsFile.close();
+            int requestsCount = 0;
+            for (auto& el : requests["requests"].items()) {
+                if (requestsCount < MAX_REQUESTS) requestsList.push_back(el.value());
+                requestsCount++;
             }
-            requestsListNew.push_back(str);
-            if (wordsCount > MAX_WORDS_IN_REQUEST) std::cout << "More than " << MAX_WORDS_IN_REQUEST << " words in request were skipped!\n";
+            if (requestsCount > MAX_REQUESTS) std::cout << "More than " << MAX_REQUESTS << " requests were skipped!\n";
+            std::vector<std::string> requestsListNew;
+            for (auto& req:requestsList) {
+                std::stringstream strstm(req);
+                std::string buffer;
+                std::string str;
+                int wordsCount = 0;
+                while (!strstm.eof()) {
+                    strstm >> buffer;
+                    if (wordsCount < MAX_WORDS_IN_REQUEST) {
+                        str += buffer;
+                        str += " ";
+                    }
+                    wordsCount++;
+                }
+                requestsListNew.push_back(str);
+                if (wordsCount > MAX_WORDS_IN_REQUEST) std::cout << "More than " << MAX_WORDS_IN_REQUEST << " words in request were skipped!\n";
+            }
+            return requestsListNew;
         }
-        return requestsListNew;
     }
 
     void putAnswers(std::vector<std::vector<std::pair<int, float>>> answers) {
